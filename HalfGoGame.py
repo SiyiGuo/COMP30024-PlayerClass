@@ -1,5 +1,5 @@
 import numpy as np
-from .HalfGoLogic import Board, EMPTY, BANNED, WHITE, BLACK, CORNER
+from HalfGoLogic import Board, EMPTY, BANNED, WHITE, BLACK, CORNER
 
 
 class HalfGoGame():

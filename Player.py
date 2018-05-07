@@ -1,8 +1,8 @@
 import numpy as np
-from .PubgGame import PubgGame
-from .HalfGoGame import HalfGoGame
-from .Search import Search
-from .Predict import PredictModule
+from PubgGame import PubgGame
+from HalfGoGame import HalfGoGame
+from Search import Search
+from Predict import PredictModule
 
 class Player(object):
     def __init__(self, color):
