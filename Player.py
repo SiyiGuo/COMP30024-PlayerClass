@@ -55,7 +55,7 @@ class Player(object):
             No action: None
         :return: void
         """
-        self.turns += 1
+        self.turn += 1
 
         action_our_form = self.game.actionRefereeToGame(action)
 
@@ -65,4 +65,8 @@ class Player(object):
             self.game = self.pubg
             self.predictModule = self.pubgPredictModule
             self.searchModule = Search(self.game, self.predictModule)
+    
+    def search(self, board, turn, colour):
+        return np.argmax(self.searchModule.search(board, turn, colour))
 
+    

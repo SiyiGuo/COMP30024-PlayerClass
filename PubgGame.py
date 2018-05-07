@@ -166,3 +166,14 @@ class PubgGame():
         """
         return board.tostring()
 
+    def actionGameToReferee(self, action):
+        direction_combine = [(-1,0), (1,0), (0,-1), (0,1), (-2,0), (2,0), (0,-2), (0,2)]
+
+        piece_index = action // 8
+        direction_index = action % 8
+        direction = direction_combine[direction_index] #note in board, it is row, column
+        y_dir, x_dir = direction
+        piece_column, piece_row = piece_index //8, piece_index % 8
+        return ((piece_column, piece_row),(piece_column + x_dir, piece_row + y_dir))
+    
+

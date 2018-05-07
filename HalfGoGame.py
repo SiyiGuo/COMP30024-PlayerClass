@@ -108,3 +108,8 @@ class HalfGoGame():
     def stringRepresentation(self, board):
         # 8x8 numpy array (canonical board)
         return board.tostring()
+
+    def actionGameToReferee(self, action):
+        x = action // 8
+        y = action % 8
+        return (x,y)
