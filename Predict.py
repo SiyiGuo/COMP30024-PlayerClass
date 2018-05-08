@@ -125,7 +125,7 @@ class PredictModule(object):
 
         return data
 
-    def predict(self, board):
+    def predict(self, board, turn):
         x_image = board.reshape(8,8,1)
     
         conv_1 = self.fullConvLayer(x_image, 1, 1, "conv2dkernel", "conv2dbias", "batch_normalizationgamma", "batch_normalizationbeta")

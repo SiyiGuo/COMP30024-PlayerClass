@@ -32,7 +32,7 @@ class HalfGoGame():
 
         return self.n*self.n + 1
 
-    def getNextState(self, board, player, action):
+    def getNextState(self, board, player, action, turn = 1):
         # if player takes action on board, return next (board,player)
         # action must be a valid move
         # 2 = (2,0)
@@ -110,6 +110,10 @@ class HalfGoGame():
         return board.tostring()
 
     def actionGameToReferee(self, action):
-        x = action // 8
-        y = action % 8
-        return (x,y)
+        x = action % 8
+        y = action // 8
+        return (int(x),int(y))
+    
+    def actionRefereeToGame(self, action):
+        x,y = action
+        return y*8+x
