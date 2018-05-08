@@ -5,6 +5,8 @@ from Search import Search
 from Predict import PredictModule
 from ABsearch import Absearch
 
+WHITE = 1
+BLACK = -1
 class Player(object):
     def __init__(self, color):
         # two games
@@ -15,7 +17,7 @@ class Player(object):
 
         # common thing
         self.game = self.halfGo
-        self.myColor = 1 if color == "white" else -1
+        self.myColor = WHITE if color == "white" else BLACK
         self.turn = 0
         self.board = self.game.getInitBoard() # Objective board
         self.predictModule = self.halfGoPredictModule
@@ -32,12 +34,16 @@ class Player(object):
         :return:
         """
         # recalibrate the turns
-        self.turn = turns
-        # print(self.board)
-        # a = input()
+        self.turn += 1
+        print(turns, self.turn)
+
         # Use our own coordinate for search, and update board
         action = self.search(self.board, turns, self.myColor)
         print(action)
+
+        if self.myColor == BLACK:
+            action = 63 - action
+
         self.board, next_player = self.game.getNextState(self.board, self.myColor, action, self.turn)
 
         # self.game coordinate -> referee
@@ -69,6 +75,7 @@ class Player(object):
 
         if self.turn == 23 and not self.pubgMode:
             self.game = self.pubg
+            self.turn = 0
             self.predictModule = self.pubgPredictModule
             self.searchModule = Absearch(self.game, self.myColor)
             self.pubgMode = True
