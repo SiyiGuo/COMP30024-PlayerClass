@@ -136,14 +136,15 @@ class PredictModule(object):
         conv_5 = self.fullConvLayer(conv_4, 0, 1, "conv2d_4kernel", "conv2d_4bias", "batch_normalization_4gamma", "batch_normalization_4beta")
 
         conv_5_reshape = conv_5.reshape(-1,2048)
-
-        dense_1 = self.fullDenseLayer(conv_5_reshape,"densekernel", "densebias", "batch_normalization_5gamma", "batch_normalization_5beta")
+        conv_5_turn = np.concatenate((turn, conv_5_reshape),axis = 1)
+        dense_1 = self.fullDenseLayer(conv_5_turn,"densekernel", "densebias", "batch_normalization_5gamma", "batch_normalization_5beta")
         dense_2 = self.fullDenseLayer(dense_1,"dense_1kernel", "dense_1bias", "batch_normalization_6gamma", "batch_normalization_6beta")
-
-        pi = self.pure_dense(dense_2, "dense_2kernel", "dense_2bias")
+        dense_2_turn = np.concatenate((turn, dense_2),axis = 1)
+        
+        pi = self.pure_dense(dense_2_turn, "dense_2kernel", "dense_2bias")
         prob = self.softmax(pi)
 
-        v = self.pure_dense(dense_2, "dense_3kernel", "dense_3bias")
+        v = self.pure_dense(dense_2_turn, "dense_3kernel", "dense_3bias")
         v = np.tanh(v)
 
         return prob,v
