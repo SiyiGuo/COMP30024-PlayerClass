@@ -87,10 +87,10 @@ class Search(object):
         for a in range(self.game.getActionSize()):
             if valids[a]:
                 if (s,a) in self.Qsa:
-                    u = self.Qsa[(s,a)] +1.0*self.Ps[s][0][a]*math.sqrt(self.Ns[s])/(1+self.Nsa[(s,a)])
+                    u = self.Qsa[(s,a)] +1.0*self.Ps[s][a]*math.sqrt(self.Ns[s])/(1+self.Nsa[(s,a)])
                 else:
 
-                    u = 1.0*self.Ps[s][0][a]*math.sqrt(self.Ns[s])     # Q = 0 ?
+                    u = 1.0*self.Ps[s][a]*math.sqrt(self.Ns[s])     # Q = 0 ?
 
                 if u > cur_best:
                     cur_best = u

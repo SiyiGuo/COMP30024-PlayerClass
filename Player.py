@@ -12,7 +12,7 @@ class Player(object):
         # two games
         self.pubg = PubgGame(8)
         self.halfGo = HalfGoGame(8)
-        self.pubgPredictModule = PredictModule("pubgParams")
+        # self.pubgPredictModule = PredictModule("pubgParams")
         self.halfGoPredictModule = PredictModule("halfGoParams")
 
         # common thing
@@ -35,14 +35,14 @@ class Player(object):
         """
         # recalibrate the turns
         self.turn += 1
-        print(turns, self.turn)
+        # print(turns, self.turn)
 
         # Use our own coordinate for search, and update board
         action = self.search(self.board, turns, self.myColor)
         print(action)
 
-        if self.myColor == BLACK:
-            action = 63 - action
+        # if self.myColor == BLACK:
+        #     action = 63 - action
 
         self.board, next_player = self.game.getNextState(self.board, self.myColor, action, self.turn)
 
@@ -52,7 +52,7 @@ class Player(object):
         if self.turn == 23 and not self.pubgMode:
             self.game = self.pubg
             self.turn = 0
-            self.predictModule = self.pubgPredictModule
+            # self.predictModule = self.pubgPredictModule
             self.searchModule = Absearch(self.game, self.myColor)
             self.pubgMode = True
 
@@ -76,7 +76,7 @@ class Player(object):
         if self.turn == 23 and not self.pubgMode:
             self.game = self.pubg
             self.turn = 0
-            self.predictModule = self.pubgPredictModule
+            # self.predictModule = self.pubgPredictModule
             self.searchModule = Absearch(self.game, self.myColor)
             self.pubgMode = True
     

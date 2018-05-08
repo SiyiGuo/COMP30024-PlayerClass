@@ -32,8 +32,8 @@ class PredictModule(object):
             out = gamma.reshape((1,1, 1,C)) * X_hat + beta.reshape((1,1, 1,C))
             return out.reshape((H,W,C))
         else:
-            mu = np.mean(X, axis=1)
-            var = np.var(X, axis=1)
+            mu = np.mean(X, axis=0)
+            var = np.var(X, axis=0)
         X_norm = (X - mu) / np.sqrt(var + 0.001)
         out = gamma * X_norm + beta
 
@@ -108,9 +108,11 @@ class PredictModule(object):
         bias = self.param[biasPath]
         g = self.param[gPath]
         b = self.param[bPath]
+
         data = np.dot(data, weight) + bias
         data = self.batchnorm_forward(data,g,b)
         data = self.ReLU(data)
+
         return data
 
     def pure_dense(self, data, wPath, biasPath):
@@ -143,11 +145,12 @@ class PredictModule(object):
         conv_5 = self.fullConvLayer(conv_4, 0, 1, "conv2d_4kernel", "conv2d_4bias", "batch_normalization_4gamma", "batch_normalization_4beta")
 
         conv_5_reshape = conv_5.reshape(-1,2048)
-        conv_5_turn = np.concatenate((turn, conv_5_reshape),axis = 1)
+        conv_5_turn = np.append(np.array([turn]), conv_5_reshape)
+ 
         dense_1 = self.fullDenseLayer(conv_5_turn,"densekernel", "densebias", "batch_normalization_5gamma", "batch_normalization_5beta")
         dense_2 = self.fullDenseLayer(dense_1,"dense_1kernel", "dense_1bias", "batch_normalization_6gamma", "batch_normalization_6beta")
-        dense_2_turn = np.concatenate((turn, dense_2),axis = 1)
-        
+        dense_2_turn = np.append(np.array([turn]), dense_2)
+
         pi = self.pure_dense(dense_2_turn, "dense_2kernel", "dense_2bias")
         prob = self.softmax(pi)
 
