@@ -22,8 +22,15 @@ class PredictModule(object):
     def batchnorm_forward(self, X, gamma, beta):
         # print(X.shape)
         if len(X.shape)>2:
-            mu = np.mean(X, axis=(0,1,2))
-            var = np.var(X, axis=(0,1,2))
+            # mu = np.mean(X, axis=(0,1,2))
+            # var = np.var(X, axis=(0,1,2))
+            H, W, C = X.shape
+            X = X.reshape((1, H, W, C))
+            mean = np.mean(X, axis=(0,1,2))
+            variance = np.mean((X - mean.reshape((1, 1, 1, C))) ** 2, axis=(0, 1, 2))
+            X_hat = (X - mean.reshape((1,1, 1,C))) * 1.0 / np.sqrt(variance.reshape((1, 1, 1,C)))
+            out = gamma.reshape((1,1, 1,C)) * X_hat + beta.reshape((1,1, 1,C))
+            return out.reshape((H,W,C))
         else:
             mu = np.mean(X, axis=1)
             var = np.var(X, axis=1)
