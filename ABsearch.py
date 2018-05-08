@@ -30,7 +30,9 @@ class Absearch():
         v = - infinity
         a = -infinity
         b = infinity
+
         board = self.game.getCanonicalForm(board, curPlayer)
+
         valids = self.game.getValidMoves(board, 1)
         self.time = time.time()
         

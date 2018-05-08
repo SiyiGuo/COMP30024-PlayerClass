@@ -18,7 +18,7 @@ class Player(object):
         # common thing
         self.game = self.halfGo
         self.myColor = WHITE if color == "white" else BLACK
-        self.turn = 0
+        self.turn = -1
         self.board = self.game.getInitBoard() # Objective board
         self.predictModule = self.halfGoPredictModule
         self.searchModule = Search(self.game, self.predictModule)
@@ -39,7 +39,8 @@ class Player(object):
 
         # Use our own coordinate for search, and update board
         action = self.search(self.board, turns, self.myColor)
-        print(action)
+
+        print(self.turn)
 
         # if self.myColor == BLACK:
         #     action = 63 - action
