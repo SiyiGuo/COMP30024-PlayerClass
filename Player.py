@@ -32,8 +32,8 @@ class Player(object):
         """
         # recalibrate the turns
         self.turn = turns
-        print(self.board)
-        a = input()
+        # print(self.board)
+        # a = input()
         # Use our own coordinate for search, and update board
         action = self.search(self.board, turns, self.myColor)
         print(action)

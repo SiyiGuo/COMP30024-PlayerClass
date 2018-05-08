@@ -173,15 +173,21 @@ class PubgGame():
         direction_index = action % 8
         direction = direction_combine[direction_index] #note in board, it is row, column
         y_dir, x_dir = direction
+
         piece_column, piece_row = piece_index //8, piece_index % 8
-        return ((piece_column, piece_row),(piece_column + y_dir, piece_row + x_dir))
+        # print("Pubg Game, turn:%s, action:%s, piece_index:%s, piece_cor:%s, %s, direction_index:%s, direction:%s"%(turn, action, piece_index, piece_column, piece_row, direction_index, direction))
+        action = {}
+        action["orig"] = (piece_column, piece_row)
+        action["dest"] = (piece_column + x_dir, piece_row + y_dir)
+        print(action)
+        return (action["orig"],action["dest"])
     
     def actionRefereeToGame(self, action):
         direction_combine = [(-1,0), (1,0), (0,-1), (0,1), (-2,0), (2,0), (0,-2), (0,2)]
         piece,dest = action
         x,y = piece
         x_dest, y_dest = dest
-        dir = x_dest-x, y_dest-y
+        dir = y_dest - y, x_dest - x
         dir_index = direction_combine.index(dir)
-        return (y*8+x)*8+dir_index
+        return (x*8+y)*8+dir_index
 
