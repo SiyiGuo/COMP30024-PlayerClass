@@ -32,7 +32,7 @@ class HalfGoGame():
 
         return self.n*self.n + 1
 
-    def getNextState(self, board, player, action, turn = 1):
+    def getNextState(self, board, player, action, turn = 0):
         # if player takes action on board, return next (board,player)
         # action must be a valid move
         # 2 = (2,0)
@@ -97,11 +97,11 @@ class HalfGoGame():
         Yes! this is correct understanding
         """
         # return player*board
-        # board = np.array(board).reshape(8,8)
+        board = np.array(board).reshape(8,8)
         result = player*board
         result[result == -3] = CORNER
-        # if player == BLACK:
-        #     result = np.rot90(result, k = 2)
+        if player == BLACK:
+            result = np.rot90(result, k = 2)
         return result#.flatten()
 
 

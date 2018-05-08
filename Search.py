@@ -24,7 +24,9 @@ class Search(object):
         :param curPlayer: current player
         :return: action, in game coordinate, that play it
         """
+
         canonicalBoard = self.game.getCanonicalForm(objectBoard, curPlayer)
+
         for x in range(25):
             self.explore(canonicalBoard, turn)
 

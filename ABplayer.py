@@ -4,6 +4,7 @@ from HalfGoGame import HalfGoGame
 from Search import Search
 from Predict import PredictModule
 from ABsearch import Absearch
+from ABplacing import ABplacing
 
 WHITE = 1
 BLACK = -1
@@ -21,7 +22,7 @@ class Player(object):
         self.turn = -1
         self.board = self.game.getInitBoard() # Objective board
         self.predictModule = self.halfGoPredictModule
-        self.searchModule = Search(self.game, self.predictModule)
+        self.searchModule = ABplacing(self.game, self.myColor)
         self.pubgMode = False
 
 
@@ -43,10 +44,9 @@ class Player(object):
             action = self.AggressivePlacing()
         if action == 0:
             action = self.search(self.board, turns, self.myColor)
-
+        print(self.board)
         if self.myColor == BLACK and not self.pubgMode:
             action = 63 - action
-
         valids = self.game.getValidMoves(self.board,self.myColor)
         while(True):
             action = 0 if action == (len(valids)-1) else action
@@ -55,7 +55,6 @@ class Player(object):
                 action+=1
             else:
                 break
-
         self.board, next_player = self.game.getNextState(self.board, self.myColor, action, self.turn)
 
         # self.game coordinate -> referee
@@ -80,7 +79,7 @@ class Player(object):
         :return: void
         """
         self.turn += 1
-
+        
         action_our_form = self.game.actionRefereeToGame(action)
 
         self.board, next_player = self.game.getNextState(self.board, -1*self.myColor, action_our_form, self.turn)
