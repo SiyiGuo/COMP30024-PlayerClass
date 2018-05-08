@@ -38,9 +38,11 @@ class Player(object):
         # print(turns, self.turn)
 
         # Use our own coordinate for search, and update board
-        action = self.search(self.board, turns, self.myColor)
-
-        print(self.turn)
+        action = 0
+        if not self.pubgMode:
+            action = self.AggressivePlacing()
+        if action == 0:
+            action = self.search(self.board, turns, self.myColor)
 
         # if self.myColor == BLACK:
         #     action = 63 - action
@@ -83,5 +85,19 @@ class Player(object):
     
     def search(self, board, turn, colour):
         return self.searchModule.search(board, turn, colour)
+    
+    def AggressivePlacing(self):
+        moves = [(-1,0), (1,0), (0,-1), (0,1)]
+        for i,row in enumerate(self.board):
+            for j, x in enumerate(row):
+                if x == self.myColor:
+                    for move in moves:
+                        i_dir, j_dir = move
+                        if 0<= i+2*i_dir < 8 and 0<= j+2*j_dir < 8:
+                            if self.board[i+i_dir][j+j_dir] == -self.myColor and self.board[i+2*i_dir][j+2*j_dir] == 0:
+                                action = self.game.actionRefereeToGame((j+2*j_dir,i+2*i_dir))
+                                return action
+        return 0
+
 
     

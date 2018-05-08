@@ -27,7 +27,7 @@ class Absearch():
         """
         s = time.time()
         results = {}
-        v = - infinity
+        v = -infinity
         a = -infinity
         b = infinity
 
