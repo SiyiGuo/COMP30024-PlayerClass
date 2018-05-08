@@ -44,10 +44,11 @@ class Search(object):
 
         #may need to mask probs
         # curr_player =  WHITE if turn % 2 == 0 else BLACK
-        # valids = self.game.getValidMoves(canonicalBoard, curr_player)
+        valids = self.game.getValidMoves(canonicalBoard, 1)
         probs = [x/float(sum(counts)) for x in counts] # *valids
 
-        return np.argmax(probs)
+        #Mask the invalid probability
+        return np.argmax(np.array(probs) * np.array(valids))
     
     def explore(self, board, turn):
         s = self.game.stringRepresentation(board)
