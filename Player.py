@@ -43,7 +43,7 @@ class Player(object):
         # self.game coordinate -> referee
         action_referee_form = self.game.actionGameToReferee(action)
 
-        if self.turn == 23:
+        if self.turn == 23 and not self.pubgMode:
             self.game = self.pubg
             self.turn = 0
             self.predictModule = self.pubgPredictModule
