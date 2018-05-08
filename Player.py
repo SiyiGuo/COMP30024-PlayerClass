@@ -20,6 +20,7 @@ class Player(object):
         self.board = self.game.getInitBoard() # Objective board
         self.predictModule = self.halfGoPredictModule
         self.searchModule = Search(self.game, self.predictModule)
+        self.pubgMode = False
 
 
 
@@ -47,6 +48,7 @@ class Player(object):
             self.turn = 0
             self.predictModule = self.pubgPredictModule
             self.searchModule = Absearch(self.game, self.myColor)
+            self.pubgMode = True
 
         return action_referee_form
 
@@ -65,10 +67,11 @@ class Player(object):
 
         self.board, next_player = self.game.getNextState(self.board, -1*self.myColor, action_our_form, self.turn)
 
-        if self.turn == 23:
+        if self.turn == 23 and not self.pubgMode:
             self.game = self.pubg
             self.predictModule = self.pubgPredictModule
             self.searchModule = Absearch(self.game, self.myColor)
+            self.pubgMode = True
     
     def search(self, board, turn, colour):
         return self.searchModule.search(board, turn, colour)
