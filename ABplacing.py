@@ -10,6 +10,7 @@ class ABplacing():
     abpDepth = 3 # actual depth = abpdepth + 1
     max = {}
     min = {}
+    nearby = [-9,-8,-7,-1,1,7,8,9]
 
     def __init__(self, game, player):
         #Player will always be White(1/friend), as we pass in canonical board
@@ -39,7 +40,13 @@ class ABplacing():
         for i in range(len(valids)):
             if valids[i]:
                 # print(i)
-                
+                near = 0
+                for dir in self.nearby:
+                    if not valids[i+dir]:
+                        near = 1
+                if near == 0:
+                    print("no nearby")
+                    continue
                 results[i] = self.alphaBetaSearch(self.game.getNextState(board, 1, i, turn), turn+1, self.abpDepth, a,b,False)   
                 v = max(v,results[i])
                 a = max(a,v)     
