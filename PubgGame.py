@@ -73,10 +73,10 @@ class PubgGame():
 
         #After turn 127 has made move, shrink baord now
         if turn == 127:
-            print("board shink")
+            # print("board shink")
             board.shrink(turn)
         if turn == 191:
-            print("board shink twice")
+            # print("board shink twice")
             board.shrink(turn)
             board.shrink(turn)
         return (np.copy(board.pieces), -player)
@@ -180,7 +180,7 @@ class PubgGame():
         action = {}
         action["orig"] = (piece_column, piece_row)
         action["dest"] = (piece_column + x_dir, piece_row + y_dir)
-        print(action)
+        # print(action)
         return (action["orig"],action["dest"])
     
     def actionRefereeToGame(self, action):

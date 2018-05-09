@@ -59,7 +59,10 @@ class Player(object):
 
         # self.game coordinate -> referee
         print("Action Call: our board:\n%s"%np.array(self.board).reshape(8,8))
-        action_referee_form = self.game.actionGameToReferee(action)
+        if action == self.game.getActionSize():
+            action_referee_form = None
+        else:
+            action_referee_form = self.game.actionGameToReferee(action)
 
         if self.turn == 23 and not self.pubgMode:
             self.game = PubgGame(8)
@@ -81,7 +84,10 @@ class Player(object):
         """
         self.turn += 1
 
-        action_our_form = self.game.actionRefereeToGame(action)
+        if action == None:
+            action_our_form = self.game.getActionSize()
+        else:
+            action_our_form = self.game.actionRefereeToGame(action)
 
         self.board, next_player = self.game.getNextState(self.board, -1*self.myColor, action_our_form, self.turn)
 
