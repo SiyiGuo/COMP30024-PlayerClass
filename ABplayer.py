@@ -107,8 +107,16 @@ class Player(object):
                             if self.board[i+i_dir][j+j_dir] == -self.myColor and self.board[i+2*i_dir][j+2*j_dir] == 0:
                                 print((j+2*j_dir,i+2*i_dir))
                                 action = self.game.actionRefereeToGame((j+2*j_dir,i+2*i_dir))
-                                
                                 return action
+        if self.board[0][1] == 3 and self.board[0][2] == 0:
+            return self.game.actionRefereeToGame((0,2))
+        if self.board[7][1] == 3 and self.board[7][2] == 0:
+            return self.game.actionRefereeToGame((0,2))
+        if self.board[0][6] == 3 and self.board[0][5] == 0:
+            return self.game.actionRefereeToGame((0,2))
+        if self.board[7][6] == 3 and self.board[7][5] == 0:
+            return self.game.actionRefereeToGame((0,2))
+            
         return 0
 
     def dangerousPlace(self, action):
@@ -117,6 +125,6 @@ class Player(object):
         for move in moves:
             i_dir, j_dir = move
             if 0<= i+i_dir < 8 and 0<= j+j_dir < 8:
-                if self.board[i+i_dir][j+j_dir] == -self.myColor:                    
+                if self.board[i+i_dir][j+j_dir] == -self.myColor or self.board[i+i_dir][j+j_dir] == 3:                    
                     return True
         return False

@@ -74,8 +74,11 @@ class ABplacing():
                 return self.max[boardString]
             for i in range(len(valids)):
                 if valids[i]:
-                    search = self.alphaBetaSearch(self.game.getNextState(board, currentP, i, turn), turn+1, depth-1, a, b ,False)
-                    
+                    if boardString in self.min:
+                        search = self.min[boardString]
+                    else:
+                        search = self.alphaBetaSearch(self.game.getNextState(board, currentP, i, turn), turn+1, depth-1, a, b ,False)
+                        self.min[boardString] = search
                     #print(search, v)
                     v = max(v,search)
                     a = max(a,v)
@@ -116,10 +119,10 @@ class ABplacing():
                     enemy.append((col,row_index))
 
         diff = len(friend) - len(enemy)
-        friendD = self.distancesBetween(friend)
+        friendD = self.distancesBetweenMiddle(friend)
         return (100*diff-0.01*friendD)  
 
-    def distancesBetween(self, pieces):
+    def distancesBetweenMiddle(self, pieces):
         distances = 0
         for position in pieces:
             distances+=self.distance(position)
