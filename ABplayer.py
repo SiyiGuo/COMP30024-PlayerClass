@@ -109,8 +109,8 @@ class Player(object):
         return self.searchModule.search(board, turn, colour)
     
     def AggressivePlacing(self):
-        moves = [(-1,0), (1,0), (0,-1), (0,1)]
-        for i,row in enumerate(self.board):
+        moves = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+        for i, row in enumerate(self.board):
             for j, x in enumerate(row):
                 if x == self.myColor:
                     for move in moves:
@@ -131,6 +131,13 @@ class Player(object):
         if self.board[7][6] == 3 and self.board[7][5] == 0:
             return self.game.actionRefereeToGame((0,2))
             
+=======
+                        if self.myColor == 1 and 0 <= i + 2 * i_dir < 6 and 0 <= j + 2 * j_dir < 6:
+                            if self.myColor == -1 and 1 < i + 2 * i_dir < 8 and 1 < j + 2 * j_dir < 8:
+                                if self.board[i + i_dir][j + j_dir] == -self.myColor and self.board[i + 2 * i_dir][j + 2 * j_dir] == 0:
+                                    action = self.game.actionRefereeToGame((j + 2 * j_dir, i + 2 * i_dir))
+                                    return action
+>>>>>>> Stashed changes
         return 0
 
     def dangerousPlace(self, action):

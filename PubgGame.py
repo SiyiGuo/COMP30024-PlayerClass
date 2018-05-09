@@ -73,9 +73,10 @@ class PubgGame():
 
         #After turn 127 has made move, shrink baord now
         if turn == 127:
+            print("board shink")
             board.shrink(turn)
         if turn == 191:
-            #can be optimized here
+            print("board shink twice")
             board.shrink(turn)
             board.shrink(turn)
         return (np.copy(board.pieces), -player)
