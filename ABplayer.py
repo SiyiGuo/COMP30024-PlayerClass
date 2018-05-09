@@ -4,7 +4,7 @@ from HalfGoGame import HalfGoGame
 from Search import Search
 from Predict import PredictModule
 from ABsearch import Absearch
-from ABplacing import ABplacing
+from HardCodeSearch import HardCodeSearch
 
 WHITE = 1
 BLACK = -1
@@ -14,15 +14,15 @@ class Player(object):
         self.pubg = PubgGame(8)
         self.halfGo = HalfGoGame(8)
         # self.pubgPredictModule = PredictModule("pubgParams")
-        self.halfGoPredictModule = PredictModule("halfGoParams")
+        # self.halfGoPredictModule = PredictModule("halfGoParams")
 
         # common thing
         self.game = self.halfGo
         self.myColor = WHITE if color == "white" else BLACK
         self.turn = -1
         self.board = self.game.getInitBoard() # Objective board
-        self.predictModule = self.halfGoPredictModule
-        self.searchModule = ABplacing(self.game, self.myColor)
+        # self.predictModule = self.halfGoPredictModule
+        self.searchModule = HardCodeSearch(self.game, self.myColor)
         self.pubgMode = False
 
 
@@ -39,37 +39,18 @@ class Player(object):
         # print(turns, self.turn)
 
         # Use our own coordinate for search, and update board
-        action = 0
-        if not self.pubgMode:
-            action = self.AggressivePlacing()
-            if self.turn == 0:
-                action = self.game.actionRefereeToGame((3,4))
-            elif self.turn == 1:
-                if self.board[3][4] == 1:
-                    action = self.game.actionRefereeToGame((3,4)) 
-                if self.board[4][3] == 1:
-                    action = self.game.actionRefereeToGame((4,3)) 
-                if self.board[3][3] == 1:
-                    action = self.game.actionRefereeToGame((4,4)) 
-                if self.board[4][4] == 1:
-                    action = self.game.actionRefereeToGame((3,3)) 
-        if action == 0:
-            action = self.search(self.board, turns, self.myColor)
+        action = self.search(self.board, turns, self.myColor)
 
-            if self.myColor == BLACK and not self.pubgMode:
-                action = 63 - action
+        if self.myColor == BLACK and not self.pubgMode:
+            action = 63 - action
         valids = self.game.getValidMoves(self.board,self.myColor)
         while(True):
             action = 0 if action == (len(valids)-1) else action
             if not valids[action]:
                 action+=1
-            elif not self.pubgMode and self.dangerousPlace(action):
-                print(action)
-                action+=1
             else:
                 break
         self.board, next_player = self.game.getNextState(self.board, self.myColor, action, self.turn)
-
         # self.game coordinate -> referee
         action_referee_form = self.game.actionGameToReferee(action)
 
@@ -107,36 +88,4 @@ class Player(object):
     def search(self, board, turn, colour):
         return self.searchModule.search(board, turn, colour)
     
-    def AggressivePlacing(self):
-        moves = [(-1, 0), (1, 0), (0, -1), (0, 1)]
-        for i, row in enumerate(self.board):
-            for j, x in enumerate(row):
-                if x == self.myColor:
-                    for move in moves:
-                        i_dir, j_dir = move
-                        if self.myColor == 1 and 0<= i+2*i_dir < 6 and 0<= j+2*j_dir < 6:
-                            if self.myColor == -1 and 1 < i+2*i_dir < 6 and 1< j+2*j_dir < 8:
-                                if 0<= i+2*i_dir < 8 and 0<= j+2*j_dir < 8:
-                                    if self.board[i+i_dir][j+j_dir] == -self.myColor and self.board[i+2*i_dir][j+2*j_dir] == 0:
-                                        print((j+2*j_dir,i+2*i_dir))
-                                        action = self.game.actionRefereeToGame((j+2*j_dir,i+2*i_dir))
-                                        return action
-        if self.board[0][1] == 3 and self.board[0][2] == 0:
-            return self.game.actionRefereeToGame((0,2))
-        if self.board[7][1] == 3 and self.board[7][2] == 0:
-            return self.game.actionRefereeToGame((0,2))
-        if self.board[0][6] == 3 and self.board[0][5] == 0:
-            return self.game.actionRefereeToGame((0,2))
-        if self.board[7][6] == 3 and self.board[7][5] == 0:
-            return self.game.actionRefereeToGame((0,2))
-        return 0
-
-    def dangerousPlace(self, action):
-        j,i = self.game.actionGameToReferee(action)
-        moves = [(-1,0), (1,0), (0,-1), (0,1)]
-        for move in moves:
-            i_dir, j_dir = move
-            if 0<= i+i_dir < 8 and 0<= j+j_dir < 8:
-                if self.board[i+i_dir][j+j_dir] == -self.myColor or self.board[i+i_dir][j+j_dir] == 3:                    
-                    return True
-        return False
+    
