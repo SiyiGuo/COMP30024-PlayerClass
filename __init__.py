@@ -7,5 +7,5 @@ from . import PubgLogic
 # the module
 from . import Search
 from . import Predict
-from . import Player
+from . import player
 

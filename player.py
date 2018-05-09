@@ -7,7 +7,7 @@ from ABsearch import Absearch
 
 WHITE = 1
 BLACK = -1
-class Player(object):
+class player(object):
     def __init__(self, color):
         # two games
         self.pubg = PubgGame(8)
