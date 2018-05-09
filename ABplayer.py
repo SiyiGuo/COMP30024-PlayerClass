@@ -42,21 +42,32 @@ class Player(object):
         action = 0
         if not self.pubgMode:
             action = self.AggressivePlacing()
+            if self.turn == 0:
+                action = self.game.actionRefereeToGame((3,4))
+            elif self.turn == 1:
+                if self.board[3][4] == 1:
+                    action = self.game.actionRefereeToGame((4,3)) 
+                if self.board[4][3] == 1:
+                    action = self.game.actionRefereeToGame((3,4)) 
+                if self.board[3][3] == 1:
+                    action = self.game.actionRefereeToGame((4,4)) 
+                if self.board[4][4] == 1:
+                    action = self.game.actionRefereeToGame((3,3)) 
 
-        
+        print(action)
         if action == 0:
             action = self.search(self.board, turns, self.myColor)
             if self.myColor == BLACK and not self.pubgMode:
                 action = 63 - action
-            valids = self.game.getValidMoves(self.board,self.myColor)
-            while(True):
-                action = 0 if action == (len(valids)-1) else action
-                if not valids[action]:
-                    action+=1
-                elif not self.pubgMode and self.dangerousPlace(action):
-                    action+=1
-                else:
-                    break
+        valids = self.game.getValidMoves(self.board,self.myColor)
+        while(True):
+            action = 0 if action == (len(valids)-1) else action
+            if not valids[action]:
+                action+=1
+            elif not self.pubgMode and self.dangerousPlace(action):
+                action+=1
+            else:
+                break
         self.board, next_player = self.game.getNextState(self.board, self.myColor, action, self.turn)
 
         # self.game coordinate -> referee
@@ -68,7 +79,8 @@ class Player(object):
             # self.predictModule = self.pubgPredictModule
             self.searchModule = Absearch(self.game, self.myColor)
             self.pubgMode = True
-
+        print(action_referee_form)
+        a = input()
         return action_referee_form
 
 
@@ -103,11 +115,13 @@ class Player(object):
                 if x == self.myColor:
                     for move in moves:
                         i_dir, j_dir = move
-                        if 0<= i+2*i_dir < 8 and 0<= j+2*j_dir < 8:
-                            if self.board[i+i_dir][j+j_dir] == -self.myColor and self.board[i+2*i_dir][j+2*j_dir] == 0:
-                                print((j+2*j_dir,i+2*i_dir))
-                                action = self.game.actionRefereeToGame((j+2*j_dir,i+2*i_dir))
-                                return action
+                        if self.myColor == 1 and 0<= i+2*i_dir < 6 and 0<= j+2*j_dir < 6:
+                            if self.myColor == -1 and 1 < i+2*i_dir < 6 and 1< j+2*j_dir < 8:
+                                if 0<= i+2*i_dir < 8 and 0<= j+2*j_dir < 8:
+                                    if self.board[i+i_dir][j+j_dir] == -self.myColor and self.board[i+2*i_dir][j+2*j_dir] == 0:
+                                        print((j+2*j_dir,i+2*i_dir))
+                                        action = self.game.actionRefereeToGame((j+2*j_dir,i+2*i_dir))
+                                        return action
         if self.board[0][1] == 3 and self.board[0][2] == 0:
             return self.game.actionRefereeToGame((0,2))
         if self.board[7][1] == 3 and self.board[7][2] == 0:
