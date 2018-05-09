@@ -3,11 +3,11 @@ import time
 class PredictModule(object):
     def __init__(self, gameType):
         self.param = {}
-        files = ["conv2dkernel", "conv2dbias", "batch_normalizationgamma", "batch_normalizationbeta", 
-        "conv2d_1kernel", "conv2d_1bias", "batch_normalization_1gamma", "batch_normalization_1beta",
-        "conv2d_2kernel", "conv2d_2bias", "batch_normalization_2gamma", "batch_normalization_2beta",
-        "conv2d_3kernel", "conv2d_3bias", "batch_normalization_3gamma", "batch_normalization_3beta",
-        "conv2d_4kernel", "conv2d_4bias", "batch_normalization_4gamma", "batch_normalization_4beta",
+        files = ["conv2dkernel", "conv2dbias",
+        "conv2d_1kernel", "conv2d_1bias",
+        "conv2d_2kernel", "conv2d_2bias",
+        "conv2d_3kernel", "conv2d_3bias",
+        "conv2d_4kernel", "conv2d_4bias",
         "densekernel", "densebias", "batch_normalization_5gamma", "batch_normalization_5beta",
         "dense_1kernel", "dense_1bias", "batch_normalization_6gamma", "batch_normalization_6beta",
         "dense_2kernel", "dense_2bias",
@@ -122,14 +122,13 @@ class PredictModule(object):
         data = np.dot(data, weight) + bias
         return data
 
-    def fullConvLayer(self, data, pad, stride, wPath, biasPath, gPath, bPath):
+    def fullConvLayer(self, data, pad, stride, wPath, biasPath):
         weight = self.param[wPath]
         bias = self.param[biasPath]
-        g = self.param[gPath]
-        b = self.param[bPath]
+
         
         data = self.conv_forward(data, weight, bias, stride, pad)
-        data = self.batchnorm_forward(data, g, b)
+
         data = self.ReLU(data)
 
         return data
@@ -137,12 +136,12 @@ class PredictModule(object):
     def predict(self, board, turn):
         x_image = board.reshape(8,8,1)
     
-        conv_1 = self.fullConvLayer(x_image, 1, 1, "conv2dkernel", "conv2dbias", "batch_normalizationgamma", "batch_normalizationbeta")
-        conv_2 = self.fullConvLayer(conv_1, 1, 1, "conv2d_1kernel", "conv2d_1bias", "batch_normalization_1gamma", "batch_normalization_1beta")
+        conv_1 = self.fullConvLayer(x_image, 1, 1, "conv2dkernel", "conv2dbias")
+        conv_2 = self.fullConvLayer(conv_1, 1, 1, "conv2d_1kernel", "conv2d_1bias")
 
-        conv_3 = self.fullConvLayer(conv_2, 0, 1, "conv2d_2kernel", "conv2d_2bias", "batch_normalization_2gamma", "batch_normalization_2beta")
-        conv_4 = self.fullConvLayer(conv_3, 0, 1, "conv2d_3kernel", "conv2d_3bias", "batch_normalization_3gamma", "batch_normalization_3beta")
-        conv_5 = self.fullConvLayer(conv_4, 0, 1, "conv2d_4kernel", "conv2d_4bias", "batch_normalization_4gamma", "batch_normalization_4beta")
+        conv_3 = self.fullConvLayer(conv_2, 0, 1, "conv2d_2kernel", "conv2d_2bias")
+        conv_4 = self.fullConvLayer(conv_3, 0, 1, "conv2d_3kernel", "conv2d_3bias")
+        conv_5 = self.fullConvLayer(conv_4, 0, 1, "conv2d_4kernel", "conv2d_4bias")
 
         conv_5_reshape = conv_5.reshape(-1,2048)
         conv_5_turn = np.append(np.array([turn]), conv_5_reshape)
@@ -150,12 +149,12 @@ class PredictModule(object):
         dense_1 = self.fullDenseLayer(conv_5_turn,"densekernel", "densebias", "batch_normalization_5gamma", "batch_normalization_5beta")
         dense_2 = self.fullDenseLayer(dense_1,"dense_1kernel", "dense_1bias", "batch_normalization_6gamma", "batch_normalization_6beta")
         dense_2_turn = np.append(np.array([turn]), dense_2)
-
-        pi = self.pure_dense(dense_2_turn, "dense_2kernel", "dense_2bias")
-        prob = self.softmax(pi)
+        #
+        # pi = self.pure_dense(dense_2_turn, "dense_2kernel", "dense_2bias")
+        # prob = self.softmax(pi)
 
         v = self.pure_dense(dense_2_turn, "dense_3kernel", "dense_3bias")
         v = np.tanh(v)
 
-        return prob,v
+        return v
 

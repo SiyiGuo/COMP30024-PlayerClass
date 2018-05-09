@@ -2,7 +2,7 @@ import numpy as np
 import math
 import operator
 import time
-
+from Predict import PredictModule
 infinity = 999999
 
 class Absearch():
@@ -16,6 +16,7 @@ class Absearch():
         self.game = game
         self.player = player
         self.abpDepth = 4
+        self.pubgPredictModule = PredictModule("pubgParams")
     
     def timeOut(self):
         if abs(time.time() - self.time) > 20:
@@ -93,11 +94,7 @@ class Absearch():
                 return self.min[boardString]
             for i in range(len(valids)):
                 if valids[i]:
-                    if boardString in self.min:
-                        search = self.min[boardString]
-                    else:
-                        search = self.alphaBetaSearch(self.game.getNextState(board, currentP, i, turn), turn+1, depth-1, a,b,True)
-                        self.min[boardString] = search
+                    search = self.alphaBetaSearch(self.game.getNextState(board, currentP, i, turn), turn+1, depth-1, a,b,True)
                     v = min(v, search)
                     a = min(a,v)
                     if b <= a:
@@ -106,31 +103,5 @@ class Absearch():
             return v       
 
     def boardValue(self,board,turn):
-        friend = []
-        enemy = []
-
-        #i is column
-        #j is row
-        #X is the piece
-        for col,row in enumerate(board):
-            for row_index,piece in enumerate(row):
-                if piece == 1:
-                    friend.append((col,row_index))
-                elif piece == -1:
-                    enemy.append((col,row_index))
-
-        diff = len(friend) - len(enemy)
-        friendD = self.distancesBetween(friend)
-        return (100*diff-0.01*friendD)  
-
-    def distancesBetween(self, pieces):
-        distances = 0
-        for position in pieces:
-            distances+=self.distance(position)
-        return distances
-    
-    def distance(self, current):
-        x1,y1 = current
-        x2,y2 = 3.5,3.5
-        return math.sqrt((x1-x2)**2 + (y1-y2)**2)
+        return self.pubgPredictModule.predict(board, turn)
         

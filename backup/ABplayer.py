@@ -1,8 +1,4 @@
-import numpy as np
 from PubgGame import PubgGame
-from HalfGoGame import HalfGoGame
-from Search import Search
-from Predict import PredictModule
 from ABsearch import Absearch
 from HardCodeSearch import HardCodeSearch
 
@@ -12,16 +8,16 @@ class Player(object):
     def __init__(self, color):
         # two games
         self.pubg = PubgGame(8)
-        self.halfGo = HalfGoGame(8)
-        # self.pubgPredictModule = PredictModule("pubgParams")
-        # self.halfGoPredictModule = PredictModule("halfGoParams")
-
-        # common thing
-        self.game = self.halfGo
-        self.myColor = WHITE if color == "white" else BLACK
-        self.turn = -1
-        self.board = self.game.getInitBoard() # Objective board
-        # self.predictModule = self.halfGoPredictModule
+        #         self.halfGo = HalfGoGame(8)
+        #         # self.pubgPredictModule = PredictModule("pubgParams")
+        #         # self.halfGoPredictModule = PredictModule("halfGoParams")
+        #
+        #         # common thing
+        #         self.game = self.halfGo
+        #         self.myColor = WHITE if color == "white" else BLACK
+        #         self.turn = -1
+        #         self.board = self.game.getInitBoard() # Objective board
+        #         # self.predictModule = self.halfGoPredictModule
         self.searchModule = HardCodeSearch(self.game, self.myColor)
         self.pubgMode = False
 
