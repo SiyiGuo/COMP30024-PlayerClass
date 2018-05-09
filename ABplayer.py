@@ -46,17 +46,16 @@ class Player(object):
                 action = self.game.actionRefereeToGame((3,4))
             elif self.turn == 1:
                 if self.board[3][4] == 1:
-                    action = self.game.actionRefereeToGame((4,3)) 
-                if self.board[4][3] == 1:
                     action = self.game.actionRefereeToGame((3,4)) 
+                if self.board[4][3] == 1:
+                    action = self.game.actionRefereeToGame((4,3)) 
                 if self.board[3][3] == 1:
                     action = self.game.actionRefereeToGame((4,4)) 
                 if self.board[4][4] == 1:
                     action = self.game.actionRefereeToGame((3,3)) 
-
-        print(action)
         if action == 0:
             action = self.search(self.board, turns, self.myColor)
+
             if self.myColor == BLACK and not self.pubgMode:
                 action = 63 - action
         valids = self.game.getValidMoves(self.board,self.myColor)
@@ -65,6 +64,7 @@ class Player(object):
             if not valids[action]:
                 action+=1
             elif not self.pubgMode and self.dangerousPlace(action):
+                print(action)
                 action+=1
             else:
                 break
@@ -79,8 +79,7 @@ class Player(object):
             # self.predictModule = self.pubgPredictModule
             self.searchModule = Absearch(self.game, self.myColor)
             self.pubgMode = True
-        print(action_referee_form)
-        a = input()
+        # a = input()
         return action_referee_form
 
 
@@ -130,14 +129,6 @@ class Player(object):
             return self.game.actionRefereeToGame((0,2))
         if self.board[7][6] == 3 and self.board[7][5] == 0:
             return self.game.actionRefereeToGame((0,2))
-            
-=======
-                        if self.myColor == 1 and 0 <= i + 2 * i_dir < 6 and 0 <= j + 2 * j_dir < 6:
-                            if self.myColor == -1 and 1 < i + 2 * i_dir < 8 and 1 < j + 2 * j_dir < 8:
-                                if self.board[i + i_dir][j + j_dir] == -self.myColor and self.board[i + 2 * i_dir][j + 2 * j_dir] == 0:
-                                    action = self.game.actionRefereeToGame((j + 2 * j_dir, i + 2 * i_dir))
-                                    return action
->>>>>>> Stashed changes
         return 0
 
     def dangerousPlace(self, action):

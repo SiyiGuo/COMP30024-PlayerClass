@@ -7,7 +7,7 @@ infinity = 999999
 
 class Absearch():
 
-    abpDepth = 3 # actual depth = abpdepth + 1
+    abpDepth = 8 # actual depth = abpdepth + 1
     max = {}
     min = {}
 
@@ -15,7 +15,7 @@ class Absearch():
         #Player will always be White(1/friend), as we pass in canonical board
         self.game = game
         self.player = player
-        self.abpDepth = 3
+        self.abpDepth = 4
     
     def timeOut(self):
         if abs(time.time() - self.time) > 20:
@@ -49,7 +49,10 @@ class Absearch():
         e = time.time()
 
         # print(results)
-        move = max(results, key=results.get)
+        try:
+            move = max(results, key=results.get)
+        except ValueError:
+            move = None
 
         return move
 

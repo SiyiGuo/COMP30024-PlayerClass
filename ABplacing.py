@@ -7,7 +7,7 @@ infinity = 999999
 
 class ABplacing():
 
-    abpDepth = 3 # actual depth = abpdepth + 1
+     # actual depth = abpdepth + 1
     max = {}
     min = {}
     nearby = [-9,-8,-7,-1,1,7,8,9]
@@ -16,10 +16,12 @@ class ABplacing():
         #Player will always be White(1/friend), as we pass in canonical board
         self.game = game
         self.player = player        
+        self.abpDepth = 4
     
     def timeOut(self):
-        if abs(time.time() - self.time) > 20:
+        if abs(time.time() - self.time) > 2000:
             return True
+        return False
 
     def search(self, board, turn, curPlayer):
         """
@@ -36,16 +38,21 @@ class ABplacing():
         # print(board)
         valids = self.game.getValidMoves(board, 1)
         self.time = time.time()
-        
+        # print(valids)
         for i in range(len(valids)):
             if valids[i]:
                 # print(i)
                 near = 0
                 for dir in self.nearby:
-                    if not valids[i+dir]:
-                        near = 1
+                    place = i+dir
+                    if 0<place<len(valids):
+                        x,y = self.game.actionGameToReferee(place)
+                        if abs(board[x][y]) == 1:
+                            near = 1
+                            break
                 if near == 0:
-                    print("no nearby")
+                    # print(i)
+                    # print("no nearby")
                     continue
                 results[i] = self.alphaBetaSearch(self.game.getNextState(board, 1, i, turn), turn+1, self.abpDepth, a,b,False)   
                 v = max(v,results[i])
@@ -56,10 +63,10 @@ class ABplacing():
 
         # print(results)
         move = max(results, key=results.get)
-
         return move
 
     def alphaBetaSearch(self, board, turn, depth, a, b, maximizingPlayer = False):
+        # print(depth)
         if self.timeOut():
             return 0
         board, currentP = board
@@ -73,6 +80,9 @@ class ABplacing():
             # print("Another result:%s"%self.game.getCanonicalForm(board, currentP))
             return (1 if result*currentP == self.player else (-1)) * 10000
         if depth == 0:
+            # print(turn)
+            # print(board)
+            # print(self.boardValue(board, turn))
             return self.boardValue(board, turn)
         valids = self.game.getValidMoves(board, 1) #8*8*8+1 vector
         if maximizingPlayer:
@@ -81,11 +91,8 @@ class ABplacing():
                 return self.max[boardString]
             for i in range(len(valids)):
                 if valids[i]:
-                    if boardString in self.min:
-                        search = self.min[boardString]
-                    else:
-                        search = self.alphaBetaSearch(self.game.getNextState(board, currentP, i, turn), turn+1, depth-1, a, b ,False)
-                        self.min[boardString] = search
+                    search = self.alphaBetaSearch(self.game.getNextState(board, currentP, i, turn), turn+1, depth-1, a, b ,False)
+                    
                     #print(search, v)
                     v = max(v,search)
                     a = max(a,v)
@@ -127,7 +134,7 @@ class ABplacing():
 
         diff = len(friend) - len(enemy)
         friendD = self.distancesBetweenMiddle(friend)
-        return (100*diff-0.01*friendD)  
+        return (200*diff-0.01*friendD)
 
     def distancesBetweenMiddle(self, pieces):
         distances = 0
