@@ -1,5 +1,5 @@
 from HalfGoGame import HalfGoGame
-
+from PubgGame import PubgGame
 from ABsearch import Absearch
 from HardCodeSearch import HardCodeSearch
 
@@ -15,6 +15,8 @@ class Player(object):
         self.board = self.game.getInitBoard() # Objective board
         self.pubgMode = False
         self.searchModule = HardCodeSearch(self.game, self.myColor)
+
+        self.pubg =PubgGame(8)
 
 
     def action(self, turns):

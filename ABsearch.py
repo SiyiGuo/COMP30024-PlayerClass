@@ -15,7 +15,7 @@ class Absearch():
         #Player will always be White(1/friend), as we pass in canonical board
         self.game = game
         self.player = player
-        self.abpDepth = 4
+        self.abpDepth = 2
         self.pubgPredictModule = PredictModule("pubgParams")
     
     def timeOut(self):
@@ -40,7 +40,7 @@ class Absearch():
         
         for i in range(len(valids)):
             if valids[i]:
-                # print(i)
+                print(i, end="\r")
                 
                 results[i] = self.alphaBetaSearch(self.game.getNextState(board, 1, i, turn), turn+1, self.abpDepth, a,b,False)   
                 v = max(v,results[i])
@@ -103,5 +103,6 @@ class Absearch():
             return v       
 
     def boardValue(self,board,turn):
-        return self.pubgPredictModule.predict(board, turn)
+        value = self.pubgPredictModule.predict(board, turn)
+        return value
         

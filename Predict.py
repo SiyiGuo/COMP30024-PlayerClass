@@ -8,8 +8,8 @@ class PredictModule(object):
         "conv2d_2kernel", "conv2d_2bias",
         "conv2d_3kernel", "conv2d_3bias",
         "conv2d_4kernel", "conv2d_4bias",
-        "densekernel", "densebias", "batch_normalization_5gamma", "batch_normalization_5beta",
-        "dense_1kernel", "dense_1bias", "batch_normalization_6gamma", "batch_normalization_6beta",
+        "densekernel", "densebias", "batch_normalizationgamma", "batch_normalizationbeta",
+        "dense_1kernel", "dense_1bias", "batch_normalization_1gamma", "batch_normalization_1beta",
         "dense_2kernel", "dense_2bias",
         "dense_3kernel", "dense_3bias",]
 
@@ -143,11 +143,11 @@ class PredictModule(object):
         conv_4 = self.fullConvLayer(conv_3, 0, 1, "conv2d_3kernel", "conv2d_3bias")
         conv_5 = self.fullConvLayer(conv_4, 0, 1, "conv2d_4kernel", "conv2d_4bias")
 
-        conv_5_reshape = conv_5.reshape(-1,2048)
+        conv_5_reshape = conv_5.reshape(-1,512)
         conv_5_turn = np.append(np.array([turn]), conv_5_reshape)
  
-        dense_1 = self.fullDenseLayer(conv_5_turn,"densekernel", "densebias", "batch_normalization_5gamma", "batch_normalization_5beta")
-        dense_2 = self.fullDenseLayer(dense_1,"dense_1kernel", "dense_1bias", "batch_normalization_6gamma", "batch_normalization_6beta")
+        dense_1 = self.fullDenseLayer(conv_5_turn,"densekernel", "densebias", "batch_normalizationgamma", "batch_normalizationbeta")
+        dense_2 = self.fullDenseLayer(dense_1,"dense_1kernel", "dense_1bias", "batch_normalization_1gamma", "batch_normalization_1beta")
         dense_2_turn = np.append(np.array([turn]), dense_2)
         #
         # pi = self.pure_dense(dense_2_turn, "dense_2kernel", "dense_2bias")
