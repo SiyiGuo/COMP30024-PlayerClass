@@ -75,15 +75,9 @@ class ABplacing():
         # result = self.game.getGameEnded(board, currentP, turn)
         result = self.game.getGameEnded(board, 1, turn)
         if result != 0:
-            # print("Board:\n%s"%np.array(board.reshape(8,8)))
-            # print("result:%s"%result)
-            # print("Another result:%s"%self.game.getCanonicalForm(board, currentP))
-            return (1 if result*currentP == self.player else (-1)) * 10000
+            return (-result if maximizingPlayer else result * 10000)
         if depth == 0:
-            # print(turn)
-            # print(board)
-            # print(self.boardValue(board, turn))
-            return self.boardValue(board, turn)
+            return ( -1 if maximizingPlayer else 1 * self.boardValue(board, turn))
         valids = self.game.getValidMoves(board, 1) #8*8*8+1 vector
         if maximizingPlayer:
             v = -infinity 

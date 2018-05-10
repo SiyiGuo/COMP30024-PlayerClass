@@ -1,22 +1,30 @@
-from HalfGoGame import HalfGoGame
 from PubgGame import PubgGame
-from ABsearch import Absearch
+from HalfGoGame import HalfGoGame
+from MinMaxSearch import MinMaxSearch
 from HardCodeSearch import HardCodeSearch
+from RandomPlacing import RandomPlacing
+from ABsearch import Absearch
+from ABplacing import ABplacing
 
 WHITE = 1
 BLACK = -1
 class Player(object):
     def __init__(self, color):
-
-        # common thing
-        self.game = HalfGoGame(8)
+        # two games
+        self.pubg = PubgGame(8)
+        self.halfGo = HalfGoGame(8)
+        #         # self.pubgPredictModule = PredictModule("pubgParams")
+        #         # self.halfGoPredictModule = PredictModule("halfGoParams")
+        #
+        #         # common thing
+        self.game = self.halfGo
         self.myColor = WHITE if color == "white" else BLACK
-        self.turn = 0
+        self.turn = -1
         self.board = self.game.getInitBoard() # Objective board
+        #         # self.predictModule = self.halfGoPredictModule
+        self.searchModule = ABplacing(self.game, self.myColor)
         self.pubgMode = False
-        self.searchModule = HardCodeSearch(self.game, self.myColor)
 
-        self.pubg =PubgGame(8)
 
 
     def action(self, turns):
@@ -35,23 +43,26 @@ class Player(object):
 
         if self.myColor == BLACK and not self.pubgMode:
             action = 63 - action
-
+        valids = self.game.getValidMoves(self.board,self.myColor)
+        while(True):
+            action = 0 if action == (len(valids)-1) else action
+            if not valids[action]:
+                action+=1
+            else:
+                break
         self.board, next_player = self.game.getNextState(self.board, self.myColor, action, self.turn)
-
         # self.game coordinate -> referee
-        if action == self.game.getActionSize():
-            action_referee_form = None
-        else:
-            action_referee_form = self.game.actionGameToReferee(action)
+        action_referee_form = self.game.actionGameToReferee(action)
 
         if self.turn == 23 and not self.pubgMode:
             self.game = self.pubg
             self.turn = 0
             # self.predictModule = self.pubgPredictModule
-            self.searchModule = Absearch(self.game, self.myColor)
+            self.searchModule = MinMaxSearch(self.game, self.myColor)
             self.pubgMode = True
-
+        # a = input()
         return action_referee_form
+
 
     def update(self, action):
         """
@@ -62,13 +73,10 @@ class Player(object):
         :return: void
         """
         self.turn += 1
+        
+        action_our_form = self.game.actionRefereeToGame(action)
 
-        if action == None:
-            action_our_form = self.game.getActionSize()
-        else:
-            action_our_form = self.game.actionRefereeToGame(action)
-
-        self.board, next_player = self.game.getNextState(self.board, -1 * self.myColor, action_our_form, self.turn)
+        self.board, next_player = self.game.getNextState(self.board, -1*self.myColor, action_our_form, self.turn)
 
         if self.turn == 23 and not self.pubgMode:
             self.game = self.pubg
@@ -76,9 +84,8 @@ class Player(object):
             # self.predictModule = self.pubgPredictModule
             self.searchModule = Absearch(self.game, self.myColor)
             self.pubgMode = True
-
+    
     def search(self, board, turn, colour):
         return self.searchModule.search(board, turn, colour)
-
-
-
+    
+    
