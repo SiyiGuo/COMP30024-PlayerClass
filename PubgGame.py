@@ -110,7 +110,7 @@ class PubgGame():
         board = Board(self.n, np.copy(board))
         blackCount, whiteCount = board.countPieces()
 
-        return blackCount, whiteCount
+        return whiteCount, blackCount
 
     def getGameEnded(self, board, player, turn):
         """

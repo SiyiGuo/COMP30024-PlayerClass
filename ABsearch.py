@@ -26,7 +26,7 @@ class Absearch():
     def decideAbpDepth(self, total_valid_move):
         assert(total_valid_move <= 48)
         print(total_valid_move)
-        a = input()
+        # a = input()
         # if total_valid_move <= 24:
         #     return 8
         return 3
@@ -68,7 +68,7 @@ class Absearch():
                 next_friend, next_enemy = self.game.countPieces(next_board)
                 next_diff = next_friend - next_enemy
 
-                if next_diff - diff  <= 0:
+                if next_diff - diff  >=  0:
                     results[i] = self.alphaBetaSearch((next_board, next_curr_player), turn+1, self.abpDepth, a,b,False)   
                     v = max(v,results[i])
                     a = max(a,v)     
@@ -139,7 +139,7 @@ class Absearch():
                     next_friend, next_enemy = self.game.countPieces(next_board)
                     next_diff = next_friend - next_enemy
 
-                    if next_diff - diff  <= 0:
+                    if next_diff - diff  >= 0:
                         search = self.alphaBetaSearch((next_board, next_curr_player), turn+1, depth-1, a, b ,maxPlayer = False)
                         
                         #print(search, v)
@@ -165,7 +165,7 @@ class Absearch():
                     next_friend, next_enemy = self.game.countPieces(next_board)
                     next_diff = next_friend - next_enemy
 
-                    if next_diff - diff  <= 0:
+                    if next_diff - diff  >= 0:
                         search = self.alphaBetaSearch((next_board, next_curr_player), turn+1, depth-1, a,b,maxPlayer = True)
                         v = min(v, search)
                         a = min(a,v)
