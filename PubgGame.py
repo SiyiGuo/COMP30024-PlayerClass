@@ -106,6 +106,12 @@ class PubgGame():
         assert(len(moves) == 8*8*8+1)
         return moves
 
+    def countPieces(self, board):
+        board = Board(self.n, np.copy(board))
+        blackCount, whiteCount = board.countPieces()
+
+        return blackCount, whiteCount
+
     def getGameEnded(self, board, player, turn):
         """
         Input:
