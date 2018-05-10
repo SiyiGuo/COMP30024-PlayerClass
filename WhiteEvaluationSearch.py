@@ -50,7 +50,6 @@ class WhiteEvaluationSearch():
                 return action
             possible_places = [(3, 2), (4, 2), (3, 3), (4, 3), (3, 4), (4, 4)]  # Column, row
             for (column, row) in possible_places:
-                print(column, row)
                 if board[row][column] == EMPTY:
                     if not self.dangerousPlace(board, (column, row)):
                         result = (column, row)
@@ -65,6 +64,7 @@ class WhiteEvaluationSearch():
         return action
 
     def AggressivePlacing(self, board):
+        possibleMoves = {}
         moves = [(-1, 0), (1, 0), (0, -1), (0, 1)]
         for i, row in enumerate(board):
             for j, x in enumerate(row):
@@ -75,16 +75,20 @@ class WhiteEvaluationSearch():
                         if 0 <= i + 2 * i_dir < 6 and 0 <= j + 2 * j_dir < 8:
                             if board[i + i_dir][j + j_dir] == ENEMY and board[i + 2 * i_dir][j + 2 * j_dir] == 0:
                                 action = self.game.actionRefereeToGame((j + 2 * j_dir, i + 2 * i_dir))
-                                return action
+                                possibleMoves[action] = i+2*i_dir
         if board[0][1] == 3 and board[0][2] == 0:
-            return self.game.actionRefereeToGame((0, 2))
+            possibleMoves[self.game.actionRefereeToGame((0, 2))] = 2
         if board[7][1] == 3 and board[7][2] == 0:
-            return self.game.actionRefereeToGame((7, 2))
+            possibleMoves[self.game.actionRefereeToGame((7, 2))] = 2
         if board[0][6] == 3 and board[0][5] == 0:
-            return self.game.actionRefereeToGame((0, 5))
+            possibleMoves[self.game.actionRefereeToGame((0, 5))] = 5
         if board[7][6] == 3 and board[7][5] == 0:
-            return self.game.actionRefereeToGame((7, 5))
-        return 0
+            possibleMoves[self.game.actionRefereeToGame((7, 5))] = 5
+        try:
+            action = min(possibleMoves, key = possibleMoves.get)
+        except:
+            action = 0
+        return action
 
     def dangerousPlace(self, board, action):
         """
@@ -99,7 +103,6 @@ class WhiteEvaluationSearch():
             i_dir, j_dir = move
             if 0 <= i + i_dir < 8 and 0 <= j + j_dir < 8:
                 if (board[i + i_dir][j + j_dir] == -self.myColor or board[i + i_dir][j + j_dir] == 3) and board[i - i_dir][j - j_dir] != self.myColor and i - i_dir > 2:
-                    print(i,j)
                     return True
         return False
 
