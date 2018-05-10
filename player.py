@@ -1,6 +1,11 @@
 from HalfGoGame import HalfGoGame
 from PubgGame import PubgGame
+
+#Moving module
 from ABsearch import Absearch
+from MinMaxSearch import MinMaxSearch
+
+# placing module
 from HardCodeSearch import HardCodeSearch
 from WhiteEvaluationSearch import WhiteEvaluationSearch
 from BlackEvaluationSearch import BlackEvaluationSearch
@@ -16,13 +21,21 @@ class Player(object):
         self.turn = 0
         self.board = self.game.getInitBoard() # Objective board
         self.pubgMode = False
+        self.pubg = PubgGame(8)
 
+
+        """different placing module"""
         if self.myColor == WHITE:
             self.searchModule = WhiteEvaluationSearch(self.game, self.myColor)
         else:
             self.searchModule = BlackEvaluationSearch(self.game, self.myColor)
 
-        self.pubg =PubgGame(8)
+        """different moving module"""
+        # self.predictModule = self.pubgPredictModule
+        # self.searchModule = Absearch(self.game, self.myColor)
+        self.pubgMoveSearchModule = MinMaxSearch(self.game, self.myColor)
+
+
 
 
     def action(self, turns):
@@ -53,8 +66,7 @@ class Player(object):
         if self.turn == 23 and not self.pubgMode:
             self.game = self.pubg
             self.turn = 0
-            # self.predictModule = self.pubgPredictModule
-            self.searchModule = Absearch(self.game, self.myColor)
+            self.searchModule = self.pubgMoveSearchModule
             self.pubgMode = True
 
         return action_referee_form
@@ -79,8 +91,7 @@ class Player(object):
         if self.turn == 23 and not self.pubgMode:
             self.game = self.pubg
             self.turn = 0
-            # self.predictModule = self.pubgPredictModule
-            self.searchModule = Absearch(self.game, self.myColor)
+            self.searchModule = self.pubgMoveSearchModule
             self.pubgMode = True
 
     def search(self, board, turn, colour):
