@@ -23,13 +23,14 @@ class Absearch():
         if abs(time.time() - self.time) > 20:
             return True
 
-    def decideAbpDepth(self, total_valid_move):
+    def decideAbpDepth(self, total_valid_move, turn):
         assert(total_valid_move <= 48)
-        print(total_valid_move)
-        # a = input()
-        # if total_valid_move <= 24:
-        #     return 8
-        return 5
+        if turn in range(186, 192):
+            return 5
+        elif turn in range(122, 128):
+            return 5
+        else:
+            return 3
     
     def search(self, board, turn, curPlayer):
         """
@@ -51,7 +52,7 @@ class Absearch():
         #adjust depth according to valid move
         valid_move_count = np.sum(valids[valids == 1])
         
-        self.abpDepth = self.decideAbpDepth(valid_move_count)
+        self.abpDepth = self.decideAbpDepth(valid_move_count, turn)
 
         #Start searching
         for i in range(len(valids)):
@@ -110,6 +111,7 @@ class Absearch():
                     return -result* 10000
                 else:
                     return result*10000
+                    
         if depth == 0:
             if not maxPlayer:
                 # Max Node
