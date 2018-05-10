@@ -30,6 +30,12 @@ class Absearch():
             return 6
         else:
             return 4
+        if turn in range(186, 192):
+            return 5
+        elif turn in range(122, 128):
+            return 5
+        else:
+            return 3
     
     def search(self, board, turn, curPlayer):
         """
@@ -101,6 +107,22 @@ class Absearch():
         
         if result != 0:
             return 0,( result if maxPlayer else -result) * 10000
+            # print("Board:\n%s"%np.array(board.reshape(8,8)))
+            # print("result:%s"%result)
+            # print("Another result:%s"%self.game.getCanonicalForm(board, currentP))
+            if not maxPlayer:
+                #case for last layer is max
+                if currentP == WHITE:
+                    return result* 10000
+                else:
+                    return -result*10000
+            else:
+                # case for last layer is min
+                if currentP == WHITE:
+                    return -result* 10000
+                else:
+                    return result*10000
+                    
         if depth == 0:
             if not maxPlayer:
                 # Max Node

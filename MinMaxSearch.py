@@ -42,6 +42,7 @@ class MinMaxSearch():
             return (0, (result if maximizingPlayer else -result) * 10000)
         if depth == 0:
             return (0, -1 if maximizingPlayer else 1 * self.boardValue(board, turn))
+            
         valids = self.game.getValidMoves(board, 1)  # 8*8*8+1 vector
         results = {}
         if maximizingPlayer:
