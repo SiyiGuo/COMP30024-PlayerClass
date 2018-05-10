@@ -34,7 +34,7 @@ class EvaluationSearch():
         :return:
         """
         board = self.game.getCanonicalForm(board, curPlayer)
-
+        action = 0
         action = self.AggressivePlacing(board)
 
         if action != 0:
@@ -157,7 +157,6 @@ class EvaluationSearch():
                     action = col, row+2
         print(np.array(results).T)
 
-        a = input()
         return self.game.actionRefereeToGame((action))
 
     def updateSides(self, results, pos, value):
