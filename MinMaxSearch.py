@@ -53,7 +53,10 @@ class MinMaxSearch():
                     _, search = self.minMax(self.game.getNextState(board, currentP, i, turn), turn + 1, depth - 1,False)
                     results[i] = search
 
-            action = max(results, key=results.get)
+            try:
+                action = max(results, key=results.get)
+            except:
+                action  = self.game.getActionSize()
             return (action, results[action])
         else:
 
@@ -61,7 +64,10 @@ class MinMaxSearch():
                 if valids[i]:
                     _, search = self.minMax(self.game.getNextState(board, currentP, i, turn), turn + 1, depth - 1,True)
                     results[i] = search
-            action = min(results, key = results.get)
+            try:
+                action = min(results, key = results.get)
+            except:
+                action = self.game.getActionSize()
             return (action, results[action])
 
     def boardValue(self, board, turn):
