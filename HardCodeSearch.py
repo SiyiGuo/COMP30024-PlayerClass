@@ -33,6 +33,7 @@ class HardCodeSearch():
         """
         board = self.game.getCanonicalForm(board, curPlayer)
 
+        action = 0
         action = self.AggressivePlacing(board)
 
         if action != 0:
