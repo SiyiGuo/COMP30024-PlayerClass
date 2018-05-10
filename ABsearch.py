@@ -89,7 +89,7 @@ class Absearch():
 
         board, currentP = board
         board = self.game.getCanonicalForm(board, currentP)
-        boardString = str(self.game.stringRepresentation(board))+str(depth)
+        boardString = str(self.game.stringRepresentation(board)) + str(depth)
         result = self.game.getGameEnded(board, 1, turn)
 
 
@@ -116,14 +116,21 @@ class Absearch():
                 return self.boardValue(board, turn)
             else:
                 #MIN node
-                return -self.boardValue(board, turn)
+                return self.boardValue(board, turn)
 
         valids = self.game.getValidMoves(board, 1) #8*8*8+1 vector
 
         if maxPlayer:
             v = -infinity 
-            if boardString in self.max:
-                return self.max[boardString]
+
+            # if boardString in self.max: 
+            #     return self.max[boardString] 
+            if boardString in self.max.keys():
+                if depth <= self.max[boardString]["depth"]:
+                    return self.max[boardString]["value"]
+            else:
+                self.max[boardString] = {"depth":-1, "value":None}
+
             for i in range(len(valids)):
                 if valids[i]:
                     
@@ -143,12 +150,22 @@ class Absearch():
                             break
                     else:
                         continue
-            self.max[boardString] = v
+
+            self.max[boardString]["depth"] = depth
+            self.max[boardString]["value"] = v
+            # self.max[boardString] = v 
             return v   
         else:
             v = infinity 
-            if boardString in self.min:
-                return self.min[boardString]
+            
+            # if boardString in self.min: 
+            #     return self.min[boardString] 
+
+            if boardString in self.min.keys():
+                if depth <= self.min[boardString]["depth"]:
+                    return self.min[boardString]["value"]
+            else:
+                self.min[boardString] = {"depth":-1, "value":None}
 
             for i in range(len(valids)):
                 if valids[i]:
@@ -167,7 +184,9 @@ class Absearch():
                             break
                     else:
                         continue
-            self.min[boardString] = v
+            # self.min[boardString] = v 
+            self.min[boardString]["depth"] = depth
+            self.min[boardString]["value"] = v
             return v       
 
     def boardValue(self,board,turn): 
