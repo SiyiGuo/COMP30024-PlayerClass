@@ -22,7 +22,7 @@ class Player(object):
         self.turn = -1
         self.board = self.game.getInitBoard() # Objective board
         #         # self.predictModule = self.halfGoPredictModule
-        self.searchModule = ABplacing(self.game, self.myColor)
+        self.searchModule = RandomPlacing(self.game, self.myColor)
         self.pubgMode = False
 
 

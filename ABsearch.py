@@ -14,7 +14,7 @@ class Absearch():
         #Player will always be White(1/friend), as we pass in canonical board
         self.game = game
         self.player = player
-        self.abpDepth = 3
+        self.abpDepth = 2
         # self.pubgPredictModule = PredictModule("pubgParams")
 
         self.max = {}
@@ -29,7 +29,7 @@ class Absearch():
         # a = input()
         # if total_valid_move <= 24:
         #     return 8
-        return 5
+        return 3
     
     def search(self, board, turn, curPlayer):
         """
@@ -95,28 +95,9 @@ class Absearch():
 
         #left Node
         if result != 0:
-            # print("Board:\n%s"%np.array(board.reshape(8,8)))
-            # print("result:%s"%result)
-            # print("Another result:%s"%self.game.getCanonicalForm(board, currentP))
-            if not maxPlayer:
-                #case for last layer is max
-                if currentP == WHITE:
-                    return result* 10000
-                else:
-                    return -result*10000
-            else:
-                # case for last layer is min
-                if currentP == WHITE:
-                    return -result* 10000
-                else:
-                    return result*10000
+            return ( -result if maxPlayer else result * 10000)
         if depth == 0:
-            if not maxPlayer:
-                # Max Node
-                return self.boardValue(board, turn)
-            else:
-                #MIN node
-                return -self.boardValue(board, turn)
+            return ( -1 if maxPlayer else 1 * self.boardValue(board, turn))
 
         valids = self.game.getValidMoves(board, 1) #8*8*8+1 vector
 

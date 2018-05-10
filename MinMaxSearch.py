@@ -39,7 +39,7 @@ class MinMaxSearch():
         board = self.game.getCanonicalForm(board, currentP)
         result = self.game.getGameEnded(board, 1, turn)
         if result != 0:
-            return (0, -result if maximizingPlayer else result * 10000)
+            return (0, result if maximizingPlayer else -result * 10000)
         if depth == 0:
             return (0, -1 if maximizingPlayer else 1 * self.boardValue(board, turn))
         valids = self.game.getValidMoves(board, 1)  # 8*8*8+1 vector
