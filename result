@@ -1,0 +1,348 @@
+note: unable to measure memory usage on this platform (try dimefox)
+Referee version 1.2 (released May 07 2018)
+Plays a basic game of Watch Your Back! between two Player classes
+Allows for resource limiting to simulate performance constraints used in marking
+Run `python referee.py -h` for help and additional usage information
+
+time: 0.000s (this turn), 0.000s (total)
+unable to measure memory usage on this platform
+time: 0.000s (this turn), 0.000s (total)
+unable to measure memory usage on this platform
+X - - - - - - X
+- - - - - - - -
+- - - - - - - -
+- - - - - - - -
+- - - - - - - -
+- - - - - - - -
+- - - - - - - -
+X - - - - - - X
+0 turns into the placing phase
+time: 0.000s (this turn), 0.000s (total)
+unable to measure memory usage on this platform
+X - - - - - - X
+- - - - - - - -
+- - - - - - - -
+- - - - - - - -
+- - - - O - - -
+- - - - - - - -
+- - - - - - - -
+X - - - - - - X
+1 turns into the placing phase
+time: 0.000s (this turn), 0.000s (total)
+unable to measure memory usage on this platform
+time: 0.000s (this turn), 0.001s (total)
+unable to measure memory usage on this platform
+X - - - - - - X
+- - - - - - - -
+- - - - - - - -
+- - - @ - - - -
+- - - - O - - -
+- - - - - - - -
+- - - - - - - -
+X - - - - - - X
+2 turns into the placing phase
+time: 0.000s (this turn), 0.000s (total)
+unable to measure memory usage on this platform
+time: 0.000s (this turn), 0.001s (total)
+unable to measure memory usage on this platform
+X - - - - - - X
+- - - - - - - -
+- - - - O - - -
+- - - @ - - - -
+- - - - O - - -
+- - - - - - - -
+- - - - - - - -
+X - - - - - - X
+3 turns into the placing phase
+time: 0.000s (this turn), 0.001s (total)
+unable to measure memory usage on this platform
+time: 0.000s (this turn), 0.001s (total)
+unable to measure memory usage on this platform
+X - - - - - - X
+- - - - - - - -
+- - - - O - - -
+- - - @ - - - -
+- - - - O - - -
+- - - - @ - - -
+- - - - - - - -
+X - - - - - - X
+4 turns into the placing phase
+time: 0.000s (this turn), 0.001s (total)
+unable to measure memory usage on this platform
+(3.8333333333333335, 3.1666666666666665)
+time: 0.001s (this turn), 0.002s (total)
+unable to measure memory usage on this platform
+X - - - - - - X
+- - - - - - - -
+- - - - O - - -
+- - - @ - O - -
+- - - - O - - -
+- - - - @ - - -
+- - - - - - - -
+X - - - - - - X
+5 turns into the placing phase
+time: 0.000s (this turn), 0.001s (total)
+unable to measure memory usage on this platform
+time: 0.000s (this turn), 0.001s (total)
+unable to measure memory usage on this platform
+X - - - - - - X
+- - - - - - - -
+- - - - O - - -
+- - - @ @ O - -
+- - - - - - - -
+- - - - @ - - -
+- - - - - - - -
+X - - - - - - X
+6 turns into the placing phase
+time: 0.000s (this turn), 0.002s (total)
+unable to measure memory usage on this platform
+time: 0.000s (this turn), 0.002s (total)
+unable to measure memory usage on this platform
+X - - - - - - X
+- - - - - - - -
+- - - - O - - -
+- - - @ - O - -
+- - - - O - - -
+- - - - @ - - -
+- - - - - - - -
+X - - - - - - X
+7 turns into the placing phase
+time: 0.000s (this turn), 0.001s (total)
+unable to measure memory usage on this platform
+time: 0.000s (this turn), 0.001s (total)
+unable to measure memory usage on this platform
+X - - - - - - X
+- - - - - - - -
+- - - - O - - -
+- - - @ @ O - -
+- - - - - - - -
+- - - - @ - - -
+- - - - - - - -
+X - - - - - - X
+8 turns into the placing phase
+time: 0.000s (this turn), 0.002s (total)
+unable to measure memory usage on this platform
+time: 0.000s (this turn), 0.002s (total)
+unable to measure memory usage on this platform
+X - - - - - - X
+- - - - - - - -
+- - - - O - - -
+- - - @ - O - -
+- - - - O - - -
+- - - - @ - - -
+- - - - - - - -
+X - - - - - - X
+9 turns into the placing phase
+time: 0.000s (this turn), 0.001s (total)
+unable to measure memory usage on this platform
+time: 0.000s (this turn), 0.001s (total)
+unable to measure memory usage on this platform
+X - - - - - - X
+- - - - - - - -
+- - - - O - - -
+- - - @ @ O - -
+- - - - - - - -
+- - - - @ - - -
+- - - - - - - -
+X - - - - - - X
+10 turns into the placing phase
+time: 0.000s (this turn), 0.002s (total)
+unable to measure memory usage on this platform
+time: 0.000s (this turn), 0.002s (total)
+unable to measure memory usage on this platform
+X - - - - - - X
+- - - - - - - -
+- - - - O - - -
+- - - @ - O - -
+- - - - O - - -
+- - - - @ - - -
+- - - - - - - -
+X - - - - - - X
+11 turns into the placing phase
+time: 0.000s (this turn), 0.002s (total)
+unable to measure memory usage on this platform
+time: 0.000s (this turn), 0.002s (total)
+unable to measure memory usage on this platform
+X - - - - - - X
+- - - - - - - -
+- - - - O - - -
+- - - @ @ O - -
+- - - - - - - -
+- - - - @ - - -
+- - - - - - - -
+X - - - - - - X
+12 turns into the placing phase
+time: 0.000s (this turn), 0.002s (total)
+unable to measure memory usage on this platform
+time: 0.000s (this turn), 0.002s (total)
+unable to measure memory usage on this platform
+X - - - - - - X
+- - - - - - - -
+- - - - O - - -
+- - - @ - O - -
+- - - - O - - -
+- - - - @ - - -
+- - - - - - - -
+X - - - - - - X
+13 turns into the placing phase
+time: 0.000s (this turn), 0.002s (total)
+unable to measure memory usage on this platform
+time: 0.000s (this turn), 0.002s (total)
+unable to measure memory usage on this platform
+X - - - - - - X
+- - - - - - - -
+- - - - O - - -
+- - - @ @ O - -
+- - - - - - - -
+- - - - @ - - -
+- - - - - - - -
+X - - - - - - X
+14 turns into the placing phase
+time: 0.000s (this turn), 0.002s (total)
+unable to measure memory usage on this platform
+time: 0.000s (this turn), 0.003s (total)
+unable to measure memory usage on this platform
+X - - - - - - X
+- - - - - - - -
+- - - - O - - -
+- - - @ - O - -
+- - - - O - - -
+- - - - @ - - -
+- - - - - - - -
+X - - - - - - X
+15 turns into the placing phase
+time: 0.000s (this turn), 0.002s (total)
+unable to measure memory usage on this platform
+time: 0.000s (this turn), 0.002s (total)
+unable to measure memory usage on this platform
+X - - - - - - X
+- - - - - - - -
+- - - - O - - -
+- - - @ @ O - -
+- - - - - - - -
+- - - - @ - - -
+- - - - - - - -
+X - - - - - - X
+16 turns into the placing phase
+time: 0.000s (this turn), 0.003s (total)
+unable to measure memory usage on this platform
+time: 0.000s (this turn), 0.003s (total)
+unable to measure memory usage on this platform
+X - - - - - - X
+- - - - - - - -
+- - - - O - - -
+- - - @ - O - -
+- - - - O - - -
+- - - - @ - - -
+- - - - - - - -
+X - - - - - - X
+17 turns into the placing phase
+time: 0.000s (this turn), 0.002s (total)
+unable to measure memory usage on this platform
+time: 0.000s (this turn), 0.002s (total)
+unable to measure memory usage on this platform
+X - - - - - - X
+- - - - - - - -
+- - - - O - - -
+- - - @ @ O - -
+- - - - - - - -
+- - - - @ - - -
+- - - - - - - -
+X - - - - - - X
+18 turns into the placing phase
+time: 0.000s (this turn), 0.003s (total)
+unable to measure memory usage on this platform
+time: 0.000s (this turn), 0.003s (total)
+unable to measure memory usage on this platform
+X - - - - - - X
+- - - - - - - -
+- - - - O - - -
+- - - @ - O - -
+- - - - O - - -
+- - - - @ - - -
+- - - - - - - -
+X - - - - - - X
+19 turns into the placing phase
+time: 0.000s (this turn), 0.003s (total)
+unable to measure memory usage on this platform
+time: 0.000s (this turn), 0.003s (total)
+unable to measure memory usage on this platform
+X - - - - - - X
+- - - - - - - -
+- - - - O - - -
+- - - @ @ O - -
+- - - - - - - -
+- - - - @ - - -
+- - - - - - - -
+X - - - - - - X
+20 turns into the placing phase
+time: 0.000s (this turn), 0.003s (total)
+unable to measure memory usage on this platform
+time: 0.000s (this turn), 0.003s (total)
+unable to measure memory usage on this platform
+X - - - - - - X
+- - - - - - - -
+- - - - O - - -
+- - - @ - O - -
+- - - - O - - -
+- - - - @ - - -
+- - - - - - - -
+X - - - - - - X
+21 turns into the placing phase
+time: 0.000s (this turn), 0.003s (total)
+unable to measure memory usage on this platform
+time: 0.000s (this turn), 0.003s (total)
+unable to measure memory usage on this platform
+X - - - - - - X
+- - - - - - - -
+- - - - O - - -
+- - - @ @ O - -
+- - - - - - - -
+- - - - @ - - -
+- - - - - - - -
+X - - - - - - X
+22 turns into the placing phase
+time: 0.000s (this turn), 0.003s (total)
+unable to measure memory usage on this platform
+time: 0.000s (this turn), 0.004s (total)
+unable to measure memory usage on this platform
+X - - - - - - X
+- - - - - - - -
+- - - - O - - -
+- - - @ - O - -
+- - - - O - - -
+- - - - @ - - -
+- - - - - - - -
+X - - - - - - X
+23 turns into the placing phase
+time: 0.000s (this turn), 0.003s (total)
+unable to measure memory usage on this platform
+time: 0.000s (this turn), 0.003s (total)
+unable to measure memory usage on this platform
+X - - - - - - X
+- - - - - - - -
+- - - - O - - -
+- - - @ @ O - -
+- - - - - - - -
+- - - - @ - - -
+- - - - - - - -
+X - - - - - - X
+0 turns into the moving phase
+time: 0.000s (this turn), 0.004s (total)
+unable to measure memory usage on this platform
+7
+time: 1.818s (this turn), 1.822s (total)
+unable to measure memory usage on this platform
+X - - - - - - X
+- - - - - - - -
+- - - - O - - -
+- - - @ @ - - -
+- - - - - O - -
+- - - - @ - - -
+- - - - - - - -
+X - - - - - - X
+1 turns into the moving phase
+time: 0.000s (this turn), 0.003s (total)
+unable to measure memory usage on this platform
+12
+time: 0.306s (this turn), 0.309s (total)

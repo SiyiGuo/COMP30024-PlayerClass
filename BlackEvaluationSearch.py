@@ -133,7 +133,7 @@ class BlackEvaluationSearch():
         results = np.zeros([8,4]) # col row
 
         i = 16
-        while i < 49:
+        while i < 48:
             col, row = i%8, i//8
             if board[row][col]==1:
                 results = self.updateSides(results, (col,row), 1)
@@ -143,6 +143,7 @@ class BlackEvaluationSearch():
                 results = self.updateCorners(results, (col, row), 1)
                 results = self.updateDefence(board, results, (col, row), 2)
                 results = self.updateTake(board, results, (col, row), 2)
+            results[col][row-2] -= self.distanceToCenter((col,row))
             i +=1
         valids = self.game.getValidMoves(board, 1)
 

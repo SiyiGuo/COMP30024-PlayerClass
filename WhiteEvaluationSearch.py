@@ -69,7 +69,6 @@ class WhiteEvaluationSearch():
         for i, row in enumerate(board):
             for j, x in enumerate(row):
                 if x == FRIEND:
-                    print(x)
                     for move in moves:
                         i_dir, j_dir = move
                         if 0 <= i + 2 * i_dir < 6 and 0 <= j + 2 * j_dir < 8:
@@ -115,7 +114,7 @@ class WhiteEvaluationSearch():
         results = np.zeros([8,4]) # col row
 
         i = 16
-        while i < 49:
+        while i < 48:
             col, row = i%8, i//8
             if board[row][col]==1:
                 results = self.updateSides(results, (col,row), 1)
@@ -125,6 +124,7 @@ class WhiteEvaluationSearch():
                 results = self.updateCorners(results, (col, row), 1)
                 results = self.updateDefence(board, results, (col, row), 2)
                 results = self.updateTake(board, results, (col, row), 2)
+            results[col][row-2] -= self.distanceToCenter((col,row))
             i +=1
         valids = self.game.getValidMoves(board, 1)
 
@@ -188,4 +188,7 @@ class WhiteEvaluationSearch():
                 results[res_col+col_dir][res_row+row_dir] += value
         return results
 
+    def distanceToCenter(self, pos):
+        x,y = pos
+        return 0.1*math.sqrt((x-3.5)**2 + (y-3.5)**2)
 
