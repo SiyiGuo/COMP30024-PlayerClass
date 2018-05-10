@@ -66,7 +66,6 @@ class BlackEvaluationSearch():
                 return action
             possible_places = [(3, 2), (4, 2), (3, 3), (4, 3), (3, 4), (4, 4)]  # Column, row
             for (column, row) in possible_places:
-                print(column, row)
                 if board[row][column] == EMPTY:
                     if not self.dangerousPlace(board, (column, row)):
                         result = (column, row)
@@ -86,7 +85,6 @@ class BlackEvaluationSearch():
         for i, row in enumerate(board):
             for j, x in enumerate(row):
                 if x == FRIEND:
-                    print(x)
                     for move in moves:
                         i_dir, j_dir = move
                         if 0 <= i + 2 * i_dir < 6 and 0 <= j + 2 * j_dir < 8:
@@ -120,7 +118,6 @@ class BlackEvaluationSearch():
             i_dir, j_dir = move
             if 0 <= i + i_dir < 8 and 0 <= j + j_dir < 8:
                 if (board[i + i_dir][j + j_dir] == -self.myColor or board[i + i_dir][j + j_dir] == 3) and board[i - i_dir][j - j_dir] != self.myColor and i - i_dir > 2:
-                    print(i,j)
                     return True
         return False
 
@@ -135,6 +132,8 @@ class BlackEvaluationSearch():
         i = 16
         while i < 48:
             col, row = i%8, i//8
+            if i < 24:
+                results[col][row-2] += 2
             if board[row][col]==1:
                 results = self.updateSides(results, (col,row), 1)
                 results = self.updateCorners(results, (col, row), 1)
