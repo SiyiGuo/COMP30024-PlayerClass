@@ -95,11 +95,11 @@ class Absearch():
 
         #left Node
         if result != 0:
-            return ( -result if maxPlayer else result * 10000)
+            return ( result if maxPlayer else -result) * 10000
         if depth == 0:
             if not maxPlayer:
                 # Max Node
-                return self.boardValue(board, turn)
+                return -self.boardValue(board, turn)
             else:
                 #MIN node
                 return self.boardValue(board, turn)

@@ -134,26 +134,31 @@ class EvaluationSearch():
                 results = self.updateSides(results, (col,row), 1)
                 results = self.updateCorners(results, (col, row), 1)
             elif board[row][col]==-1:
-                results = self.updateSides(results, (col,row), -1)
+                results = self.updateSides(results, (col,row), -2)
                 results = self.updateCorners(results, (col, row), 1)
                 results = self.updateDefence(board, results, (col, row), 2)
                 results = self.updateTake(board, results, (col, row), 1)
             i +=1
         valids = self.game.getValidMoves(board, 1)
+
+        # print(np.array(results).T)
         for i in range(len(valids)):
-            if 15< i < 49 and valids[i]:
+            if 15< i < 48 and not valids[i]:
                 col, row = i%8, i//8
-                col, row = col-2, row-2
-                results[col][row] = 0
+                col, row = col, row-2
+                # print(col,row)
+                results[col, row] = 0
+
         max = -100
         for col, x in enumerate(results):
             for row, y in enumerate(x):
                 if y>max:
                     max = y
-                    action = col, row
-        print(results)
+                    action = col, row+2
+        print(np.array(results).T)
+
         a = input()
-        return self.game.actionRefereeToGame((col,row))
+        return self.game.actionRefereeToGame((action))
 
     def updateSides(self, results, pos, value):
         sides = [(1,0),(-1,0),(0,1),(0,-1)]
@@ -166,7 +171,7 @@ class EvaluationSearch():
         return results
 
     def updateCorners(self, results, pos, value):
-        sides = [(1,1),(-1,1),(-1,1),(-1,-1)]
+        sides = [(1,1),(-1,1),(1,-1),(-1,-1)]
         col, row = pos
         col, row = col, row - 2
         for dir in sides:
