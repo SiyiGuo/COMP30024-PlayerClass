@@ -29,12 +29,8 @@ class Absearch():
         # a = input()
         # if total_valid_move <= 24:
         #     return 8
-        return 3
+        return 5
     
-    def wasteLifeSearch(action):
-        """
-        input: action, a num in range()
-        """
     def search(self, board, turn, curPlayer):
         """
         input: A canonical board
@@ -55,7 +51,7 @@ class Absearch():
         #adjust depth according to valid move
         valid_move_count = np.sum(valids[valids == 1])
         
-        self.abdDepth = self.decideAbpDepth(valid_move_count)
+        self.abpDepth = self.decideAbpDepth(valid_move_count)
 
         #Start searching
         for i in range(len(valids)):
@@ -94,10 +90,10 @@ class Absearch():
         board, currentP = board
         board = self.game.getCanonicalForm(board, currentP)
         boardString = str(self.game.stringRepresentation(board))+str(depth)
-        # result = self.game.getGameEnded(board, currentP, turn)
         result = self.game.getGameEnded(board, 1, turn)
 
-        #Exit point
+
+        #left Node
         if result != 0:
             # print("Board:\n%s"%np.array(board.reshape(8,8)))
             # print("result:%s"%result)
@@ -114,10 +110,8 @@ class Absearch():
                     return -result* 10000
                 else:
                     return result*10000
-
-
         if depth == 0:
-            if maxPlayer:
+            if not maxPlayer:
                 # Max Node
                 return self.boardValue(board, turn)
             else:
