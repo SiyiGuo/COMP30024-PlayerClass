@@ -53,6 +53,12 @@ class Absearch():
         self.time = time.time()
         
         valids = np.array(self.game.getValidMoves(board, 1))
+
+        """Forfeit Case"""
+        if np.sum(valids[valids == 1]) == 0:
+            return self.game.getActionSize()
+
+        """Normal Search"""
         boardString = self.game.stringRepresentation(board)
         #adjust depth according to valid move
         valid_move_count = np.sum(valids[valids == 1])
@@ -69,27 +75,7 @@ class Absearch():
             self.max[boardString]["depth"] = self.abpDepth
             self.max[boardString]["action"] = move
             self.max[boardString]["value"] = value
-            
-        # for i in range(len(valids)):
-        #     if valids[i] == 1:
-        #         print(i, end="\r")
-                
-        #         now_friend, now_enemy = self.game.countPieces(board)
-        #         diff = now_friend -now_enemy
-        #         next_board, next_curr_player = self.game.getNextState(board, 1, i, turn)
-        #         next_friend, next_enemy = self.game.countPieces(next_board)
-        #         next_diff = next_friend - next_enemy
 
-        #         if next_diff - diff  >=  0:
-        #             _, results[i] = self.alphaBetaSearch((next_board, next_curr_player), turn+1, self.abpDepth, a,b,False)   
-        #             v = max(v,results[i])
-        #             a = max(a,v)     
-        #             if b <= a:
-        #                 break
-        #         else:
-        #             # print("silly move, passs:\n%s"%np.array(next_board).reshape(8,8))
-        #             continue
-        
 
         e = time.time()
 
