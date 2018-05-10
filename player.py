@@ -2,6 +2,8 @@ from HalfGoGame import HalfGoGame
 from PubgGame import PubgGame
 from ABsearch import Absearch
 from HardCodeSearch import HardCodeSearch
+from WhiteEvaluationSearch import WhiteEvaluationSearch
+from BlackEvaluationSearch import BlackEvaluationSearch
 
 WHITE = 1
 BLACK = -1
@@ -14,7 +16,11 @@ class Player(object):
         self.turn = 0
         self.board = self.game.getInitBoard() # Objective board
         self.pubgMode = False
-        self.searchModule = HardCodeSearch(self.game, self.myColor)
+
+        if self.myColor == WHITE:
+            self.searchModule = WhiteEvaluationSearch(self.game, self.myColor)
+        else:
+            self.searchModule = BlackEvaluationSearch(self.game, self.myColor)
 
         self.pubg =PubgGame(8)
 
