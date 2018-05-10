@@ -3,7 +3,7 @@ from HalfGoGame import HalfGoGame
 from MinMaxSearch import MinMaxSearch
 from HardCodeSearch import HardCodeSearch
 from RandomPlacing import RandomPlacing
-from EvaluationSearch import EvaluationSearch
+from WhiteEvaluationSearch import WhiteEvaluationSearch
 from ABsearch import Absearch
 
 WHITE = 1
@@ -24,7 +24,7 @@ class Player(object):
         self.turn = -1
         self.board = self.game.getInitBoard()  # Objective board
         #         # self.predictModule = self.halfGoPredictModule
-        self.searchModule = EvaluationSearch(self.game, self.myColor)
+        self.searchModule = WhiteEvaluationSearch(self.game, self.myColor)
         self.pubgMode = False
 
     def action(self, turns):
@@ -59,8 +59,8 @@ class Player(object):
             self.game = self.pubg
             self.turn = 0
             # self.predictModule = self.pubgPredictModule
-            # self.searchModule = MinMaxSearch(self.game, self.myColor)
-            self.searchModule = Absearch(self.game, self.myColor)
+            self.searchModule = MinMaxSearch(self.game, self.myColor)
+            # self.searchModule = Absearch(self.game, self.myColor)
             self.pubgMode = True
         # a = input()
         return action_referee_form
@@ -83,8 +83,8 @@ class Player(object):
             self.game = self.pubg
             self.turn = 0
             # self.predictModule = self.pubgPredictModule
-            # self.searchModule = MinMaxSearch(self.game, self.myColor)
-            self.searchModule = Absearch(self.game, self.myColor)
+            self.searchModule = MinMaxSearch(self.game, self.myColor)
+            # self.searchModule = Absearch(self.game, self.myColor)
             self.pubgMode = True
 
     def search(self, board, turn, colour):

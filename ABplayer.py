@@ -5,6 +5,7 @@ from HardCodeSearch import HardCodeSearch
 from RandomPlacing import RandomPlacing
 from ABsearch import Absearch
 from ABplacing import ABplacing
+from HumanSearch import HumanSearch
 
 WHITE = 1
 BLACK = -1
@@ -22,7 +23,7 @@ class Player(object):
         self.turn = -1
         self.board = self.game.getInitBoard() # Objective board
         #         # self.predictModule = self.halfGoPredictModule
-        self.searchModule = RandomPlacing(self.game, self.myColor)
+        self.searchModule = HumanSearch(self.game, self.myColor)
         self.pubgMode = False
 
 
