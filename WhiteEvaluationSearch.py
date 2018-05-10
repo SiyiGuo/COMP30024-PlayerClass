@@ -116,6 +116,8 @@ class WhiteEvaluationSearch():
         i = 16
         while i < 48:
             col, row = i%8, i//8
+            if i < 24:
+                results[col][row-2] += 2
             if board[row][col]==1:
                 results = self.updateSides(results, (col,row), 1)
                 results = self.updateCorners(results, (col, row), 1)
@@ -182,7 +184,9 @@ class WhiteEvaluationSearch():
         res_col, res_row = col, row - 2
         for dir in sides:
             col_dir, row_dir = dir
-            if 0 <= res_col+col_dir < 8 or 0<= res_row+row_dir < 4:
+            if 0 <= res_col+col_dir < 8 and 0<= res_row+row_dir < 4:
+                pass
+            else:
                 continue
             if 0 <= res_col+2*col_dir < 8 or 0<= res_row+2*row_dir < 4 or board[row+2*row_dir][col+2*col_dir] == 1:
                 results[res_col+col_dir][res_row+row_dir] += value

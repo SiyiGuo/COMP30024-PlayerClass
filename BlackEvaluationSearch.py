@@ -205,3 +205,7 @@ class BlackEvaluationSearch():
             if 0 <= res_col+2*col_dir < 8 or 0<= res_row+2*row_dir < 4 or board[row+2*row_dir][col+2*col_dir] == 1:
                 results[res_col+col_dir][res_row+row_dir] += value
         return results
+    
+    def distanceToCenter(self, pos):
+        x,y = pos
+        return 0.1*math.sqrt((x-3.5)**2 + (y-3.5)**2)
