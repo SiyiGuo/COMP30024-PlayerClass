@@ -23,7 +23,7 @@ class Top3ExplorSearch():
         if turn in range(185, 192):
             return 8
         else:
-            return 6
+            return 4
 
     def search(self, board, turn, curPlayer):
         """
@@ -35,76 +35,131 @@ class Top3ExplorSearch():
         boardString = str(self.game.stringRepresentation(board))
 
         valids = np.array(self.game.getValidMoves(board, 1))
+        valid_move_count = np.sum(valids[valids == 1])
 
         """Forfeit Case"""
-        if np.sum(valids[valids == 1]) == 0:
+        if valid_move_count == 0:
             return self.game.getActionSize()
 
         """Decide"""
-        valid_move_count = np.sum(valids[valids == 1])
         depth = self.decideAbpDepth(valid_move_count, turn)
 
         if boardString in self.boards:
             move = self.boards[boardString]
         else:
-            move, _ = self.minMax((board, 1), turn, depth, True)
+            move, _ = self.minMax((board, 1), turn, depth, maxPlayer = True)
             self.boards[boardString] = move
+
+        # a = input()
         return move
 
 
-    def minMax(self, board, turn, depth, maximizingPlayer=True):
+    def minMax(self, board, turn, depth, maxPlayer=True):
 
+        """must process"""
         board, currentP = board
         board = self.game.getCanonicalForm(board, currentP)
+        valids = self.game.getValidMoves(board, 1)  # 8*8*8+1 vector
 
+
+        """Leaf Note"""
         result = self.game.getGameEnded(board, 1, turn)
         if result != 0:
-            return (0, result * 10000)
+            if maxPlayer:
+                """return value to a min node"""
+                return (0, -result * 10000)
+            else:
+                """return value to a max node"""
+                return (0, result * 10000)
+
         if depth == 0:
-            return (0, self.boardValue(board, turn))
+            if maxPlayer:
+                """return value to a min node"""
+                # print(board)
+                # print(-self.boardValue(board, turn))
+                # a = input()
+                return (0, self.boardValue(board, turn))
+            else:
+                """return value to a max node"""
+                return (0, -self.boardValue(board, turn))
 
-        valids = self.game.getValidMoves(board, 1)  # 8*8*8+1 vector
-        results = {}
-        boards = {}
-        max3Queue = []
+        if maxPlayer:
+            """Max case"""
+            results = {}
+            boards = {}
+            max3Queue = []
+            for action in range(len(valids)):
+                if valids[action]:
+                    # TODO: Add silly move detector
 
-        for action in range(len(valids)):
-            if valids[action]:
-                # TODO: Add silly move detector
+                    # board, player, action, turn)
+                    next_board, next_player = self.game.getNextState(board, 1, action, turn)
 
-                # board, player, action, turn)
+                    value = self.boardValue(next_board, turn + 1)
+
+                    boards[action] = next_board
+
+                    if len(max3Queue) <= 3:
+                        max3Queue.append((action, value))
+                    else:
+                        if value > max3Queue[-1][1]:
+                            max3Queue[-1] = (action, value)
+
+                    max3Queue = sorted(max3Queue, key=lambda x: x[1])
+
+            for (action, value) in max3Queue:
                 next_board, next_player = self.game.getNextState(board, 1, action, turn)
+                _, search_value = self.minMax((next_board, next_player), turn + 1, depth - 1, False)
+                results[action] = search_value
 
-                value = self.boardValue(next_board, turn + 1)
+            try:
+                action = max(results, key=results.get)
+            except:
+                action = self.game.getActionSize()
+                results[action] = 0
 
-                boards[action] = next_board
+        elif not maxPlayer:
+            """MIN Case"""
+            results = {}
+            boards = {}
+            min3Queue = []
+            for action in range(len(valids)):
+                if valids[action]:
+                    # TODO: Add silly move detector
+
+                    # board, player, action, turn)
+                    next_board, next_player = self.game.getNextState(board, 1, action, turn)
+
+                    value = -self.boardValue(next_board, turn + 1)
+
+                    boards[action] = next_board
+
+                    if len(min3Queue) <= 3:
+                        min3Queue.append((action, value))
+                    else:
+                        if value < min3Queue[-1][1]:
+                            min3Queue[-1] = (action, value)
+
+                    min3Queue = sorted(min3Queue, key=lambda x: x[1], reverse=True)
+
+            for (action, value) in min3Queue:
+                next_board, next_player = self.game.getNextState(board, 1, action, turn)
+                _, search_value = self.minMax((next_board, next_player), turn + 1, depth - 1, True)
+                results[action] = search_value
+
+            try:
+                action = min(results, key=results.get)
+            except:
+                action = self.game.getActionSize()
+                results[action] = 0
 
 
-                if len(max3Queue) <= 3:
-                    max3Queue.append((action, value))
-                else:
-                    if value > max3Queue[-1][1]:
-                        max3Queue[-1] = (action, value)
-
-                max3Queue = sorted(max3Queue, key=lambda x: x[1])
-
-        for (action, value) in max3Queue:
-            next_board, next_player = self.game.getNextState(board, 1,  action,  turn)
-            _, search = self.minMax((next_board, next_player), turn + 1, depth - 1,
-                                    False)
-            search = - search
-            results[action] = search
-
-        try:
-            action = max(results, key=results.get)
-        except:
-            action = self.game.getActionSize()
-            results[action] = 0
 
         return (action, results[action])
 
     def boardValue(self, board, turn):
         """
+        The higher, the better
         :param board: take a canonical board
         :param turn: the turn index
         :return: a value
@@ -112,7 +167,7 @@ class Top3ExplorSearch():
 
         difference_index = 100
         interDistance_index =  0
-        toCenterDistance_index = - 0.01
+        toCenterDistance_index = - 1000
 
         friend = []
         enemy = []
@@ -134,7 +189,7 @@ class Top3ExplorSearch():
         return value
 
     def interDistance(self, pieces):
-        length = len(pieces[0])
+        length = len(pieces)
 
         sum_x = 0
         sum_y = 0
