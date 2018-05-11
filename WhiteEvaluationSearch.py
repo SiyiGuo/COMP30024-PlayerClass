@@ -122,6 +122,7 @@ class WhiteEvaluationSearch():
                 results = self.updateCorners(results, (col, row), 1)
             elif board[row][col]==-1:
                 results = self.updateSides(results, (col,row), -2)
+                results = self.updateSidess(results, (col,row), 1)
                 results = self.updateCorners(results, (col, row), 0.5)
                 results = self.updateDefence(board, results, (col, row), 2)
                 results = self.updateTake(board, results, (col, row), 2)
@@ -156,6 +157,16 @@ class WhiteEvaluationSearch():
             col_dir, row_dir = dir
             if 0 <= col+col_dir < 8 and 0<= row+row_dir < 4:
                 results[col+col_dir][row+row_dir] += value
+        return results
+    
+    def updateSidess(self, results, pos, value):
+        sides = [(1,0),(-1,0),(0,1),(0,-1)]
+        col, row = pos
+        col, row = col, row - 2
+        for dir in sides:
+            col_dir, row_dir = dir
+            if 0 <= col+2*col_dir < 8 and 0<= row+2*row_dir < 4:
+                results[col+2*col_dir][row+2*row_dir] += value
         return results
 
     def updateCorners(self, results, pos, value):
