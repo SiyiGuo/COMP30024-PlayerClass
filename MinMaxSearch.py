@@ -14,7 +14,7 @@ class MinMaxSearch():
         # Player will always be White(1/friend), as we pass in canonical board
         self.game = game
         self.player = player
-        self.abpDepth = 3 # Actual Depth = += 1
+        self.abpDepth = 4 # Actual Depth = += 1
         self.boards = {}
 
 
