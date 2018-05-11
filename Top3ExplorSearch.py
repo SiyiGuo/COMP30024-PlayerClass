@@ -39,71 +39,44 @@ class Top3ExplorSearch():
         board = self.game.getCanonicalForm(board, currentP)
         result = self.game.getGameEnded(board, 1, turn)
         if result != 0:
-            return (0, (result if maximizingPlayer else -result) * 10000)
+            return (0, result * 10000)
         if depth == 0:
             return (0, self.boardValue(board, turn))
 
         valids = self.game.getValidMoves(board, 1)  # 8*8*8+1 vector
         results = {}
-        if maximizingPlayer:
+        boards = {}
+        max3Queue = []
+        for action in range(len(valids)):
+            if valids[action]:
+                # TODO: Add silly move detector
 
-            max3Queue = []
-            for action in range(len(valids)):
-                if valids[action]:
-                    # TODO: Add silly move detector
+                # board, player, action, turn)
+                next_board, next_player = self.game.getNextState(board, 1, action, turn)
+                value = self.boardValue(next_board, turn + 1)
+                boards[action] = next_board
 
-                    # board, player, action, turn)
-                    next_board, next_player = self.game.getNextState(board, currentP, action, turn)
-                    value = self.boardValue(next_board, turn + 1)
+                # TODO: change to depth
+                if len(max3Queue) <= 3:
+                    max3Queue.append((action, value))
+                else:
+                    if value > max3Queue[-1][1]:
+                        max3Queue[-1] = (action, value)
 
-                    # TODO: change to depth
-                    if len(max3Queue) <= 3:
-                        max3Queue.append((action, value))
-                    else:
-                        if value > max3Queue[-1][1]:
-                            max3Queue[-1] = (action, value)
+                max3Queue = sorted(max3Queue, key=lambda x: x[1])
+        for (action, value) in max3Queue:
+            print(boards[action])
+            print(value)
+            a = input()
+            _, search = self.minMax(self.game.getNextState(board, 1,  action,  turn), turn + 1, depth - 1,
+                                    False)
+            results[action] = search
 
-                    max3Queue = sorted(max3Queue, key=lambda x: x[1])
-            for (action, value) in max3Queue:
-                _, search = self.minMax(self.game.getNextState(board, -currentP,  action,  turn), turn + 1, depth - 1,
-                                        False)
-                results[action] = search
-
-            try:
-                action = max(results, key=results.get)
-            except:
-                action = self.game.getActionSize()
-            return (action, results[action])
-
-        else:
-
-            min3Queue = []
-            for action in range(len(valids)):
-                if valids[action]:
-                    # TODO: Add silly move detector
-
-                    next_board, next_player = self.game.getNextState(board, currentP, action,  turn)
-                    value = self.boardValue(next_board, turn + 1)
-
-                    if len(min3Queue) <= 3:
-                        min3Queue.append((action, value))
-                    else:
-                        if value < min3Queue[-1][1]:
-                            min3Queue[-1] = (action, value)
-
-                    min3Queue = sorted(min3Queue, key=lambda x: x[1])
-
-            for (action, value) in min3Queue:
-                _, search = self.minMax(self.game.getNextState(board, -currentP, action, turn), turn + 1, depth - 1,
-                                        True)
-                results[action] = search
-
-            try:
-                action = min(results, key=results.get)
-            except:
-                action = self.game.getActionSize()
-
-            return (action, results[action])
+        try:
+            action = max(results, key=results.get)
+        except:
+            action = self.game.getActionSize()
+        return (action, results[action])
 
     def boardValue(self, board, turn):
         friend = []
