@@ -156,7 +156,7 @@ class BlackEvaluationSearch():
                 results = self.updateSides(results, (col,row), -2)
                 results = self.updateCorners(results, (col, row), 0.5)
                 results = self.updateDefence(board, results, (col, row), 2)
-                results = self.updateTake(board, results, (col, row), 2)
+                results = self.updateTake(board, results, (col, row), 2.5)
             results[col][row-2] -= self.distanceToCenter((col,row))
             i +=1
         valids = self.game.getValidMoves(board, 1)
