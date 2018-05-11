@@ -60,11 +60,7 @@ class Top3ExplorSearch():
 
         """must process"""
         board, currentP = board
-        board = self.game.getCanonicalForm(board, currentP)
-        valids = self.game.getValidMoves(board, 1)  # 8*8*8+1 vector
-
-
-        """Leaf Note"""
+        
         result = self.game.getGameEnded(board, 1, turn)
         if result != 0:
             if maxPlayer:
@@ -75,24 +71,12 @@ class Top3ExplorSearch():
                 return (0, result * 10000)
 
         if depth == 0:
-            if maxPlayer:
-                """return value to a min node"""
-                # print(board)
-                # print(-self.boardValue(board, turn))
-                # a = input()
-                return (0, self.boardValue(board, turn))
-            else:
-                """return value to a max node"""
-                return (0, -self.boardValue(board, turn))
-
-        if maxPlayer:
-            """Max case"""
-            results = {}
-            boards = {}
-            max3Queue = []
-            for action in range(len(valids)):
-                if valids[action]:
-                    # TODO: Add silly move detector
+            return (0, self.boardValue(board, turn))
+        board = self.game.getCanonicalForm(board, currentP)
+        valids = self.game.getValidMoves(board, 1)  # 8*8*8+1 vector
+        results = {}
+        boards = {}
+        max3Queue = []
 
                     # board, player, action, turn)
                     next_board, next_player = self.game.getNextState(board, 1, action, turn)
