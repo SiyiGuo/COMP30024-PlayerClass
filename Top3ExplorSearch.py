@@ -65,10 +65,10 @@ class Top3ExplorSearch():
         if result != 0:
             if maxPlayer:
                 """return value to a min node"""
-                return (0, -result * 10000)
+                return (0, result * 10000)
             else:
                 """return value to a max node"""
-                return (0, result * 10000)
+                return (0, -result * 10000)
 
         if depth == 0:
             if maxPlayer:
@@ -166,6 +166,9 @@ class Top3ExplorSearch():
         difference_index = 500
         interDistance_index =  -0.5
         toCenterDistance_index = -1
+
+        if turn in range(10):
+            difference_index = 10000
 
         friend = []
         enemy = []
