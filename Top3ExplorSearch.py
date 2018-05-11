@@ -1,79 +1,110 @@
 import numpy as np
 import math
+import operator
+import random
 import time
-infinity = 9999
+from Predict import PredictModule
 
-WHITE = 1
-BLACK = -1
+infinity = 999999
 
 
-class Absearch():
+class Top3ExplorSearch():
 
     def __init__(self, game, player):
         # Player will always be White(1/friend), as we pass in canonical board
         self.game = game
         self.player = player
-        self.abpDepth = 4
-        # self.pubgPredictModule = PredictModule("pubgParams")
-
-        self.max = {}
-        self.min = {}
-
-    def timeOut(self):
-        if abs(time.time() - self.time) > 20:
-            return True
-
-    def decideAbpDepth(self, total_valid_move, turn):
-        assert (total_valid_move <= 48)
-        print(total_valid_move)
-        if turn in range(185, 192):
-            return 6
-        else:
-            return 4
-        if turn in range(186, 192):
-            return 5
-        elif turn in range(122, 128):
-            return 5
-        else:
-            return 3
+        self.abpDepth = 3  # Actual Depth = += 1
+        self.boards = {}
 
     def search(self, board, turn, curPlayer):
         """
         input: A canonical board
         return: a action number in range(513)
         """
-        s = time.time()
-        results = {}
         board = self.game.getCanonicalForm(board, curPlayer)
-
-        self.time = time.time()
-
-        valids = np.array(self.game.getValidMoves(board, 1))
-
-        """Forfeit move"""
-        valid_move_count = np.sum(valids[valids == 1])
-        if np.sum(valid_move_count) == 0:
-            # Case for forfeit move
-            return self.game.getActionSize()
-
-        """Normal Search"""
-        boardString = self.game.stringRepresentation(board)
-        # adjust depth according to valid move
-
-        self.abpDepth = self.decideAbpDepth(valid_move_count, turn)
-
-        if boardString in self.max.keys() and self.abpDepth <= self.max[boardString]["depth"]:
-            move = self.max[boardString]["action"]
+        boardString = str(self.game.stringRepresentation(board))
+        if boardString in self.boards:
+            move = self.boards[boardString]
         else:
-            self.max[boardString] = {"depth": -1, "action": None, "value": None}
-            move, value = self.alphaBetaSearch((board, 1), turn, self.abpDepth, -infinity, infinity, True)
-            self.max[boardString]["depth"] = self.abpDepth
-            self.max[boardString]["action"] = move
-            self.max[boardString]["value"] = value
-
-
+            move, _ = self.minMax((board, 1), turn, self.abpDepth, True)
+            self.boards[boardString] = move
+        print(move)
         return move
 
+
+    def minMax(self, board, turn, depth, maximizingPlayer=True):
+
+        board, currentP = board
+        board = self.game.getCanonicalForm(board, currentP)
+        result = self.game.getGameEnded(board, 1, turn)
+        if result != 0:
+            return (0, (result if maximizingPlayer else -result) * 10000)
+        if depth == 0:
+            return (0, -1 if maximizingPlayer else 1 * self.boardValue(board, turn))
+
+        valids = self.game.getValidMoves(board, 1)  # 8*8*8+1 vector
+        results = {}
+        if maximizingPlayer:
+
+            max3Queue = []
+            for action in range(len(valids)):
+                if valids[action]:
+                    # TODO: Add silly move detector
+
+                    # board, player, action, turn)
+                    next_board, next_player = self.game.getNextState(board, currentP, action, turn)
+                    value = self.boardValue(next_board, turn + 1)
+
+                    # TODO: change to depth
+                    if len(max3Queue) <= 3:
+                        max3Queue.append((action, value))
+                    else:
+                        if value > max3Queue[-1][1]:
+                            max3Queue[-1] = (action, value)
+
+                    max3Queue = sorted(max3Queue, key=lambda x: x[1])
+            print("curPlayer", currentP)
+            for (action, value) in max3Queue:
+                _, search = self.minMax(self.game.getNextState(board, -currentP,  action,  turn), turn + 1, depth - 1,
+                                        False)
+                results[action] = search
+
+            try:
+                action = max(results, key=results.get)
+            except:
+                action = self.game.getActionSize()
+            return (action, results[action])
+
+        else:
+
+            min3Queue = []
+            for action in range(len(valids)):
+                if valids[action]:
+                    # TODO: Add silly move detector
+
+                    next_board, next_player = self.game.getNextState(board, currentP, action,  turn)
+                    value = self.boardValue(next_board, turn + 1)
+
+                    if len(min3Queue) <= 3:
+                        min3Queue.append((action, value))
+                    else:
+                        if value < min3Queue[-1][1]:
+                            min3Queue[-1] = (action, value)
+
+                    min3Queue = sorted(min3Queue, key=lambda x: x[1], reverse=True)
+
+            for (action, value) in min3Queue:
+                _, search = self.minMax(self.game.getNextState(board, -currentP, action, turn), turn + 1, depth - 1,
+                                        True)
+                results[action] = search
+
+            try:
+                action = min(results, key=results.get)
+            except:
+                action = self.game.getActionSize()
+
+            return (action, results[action])
 
     def boardValue(self, board, turn):
         friend = []
@@ -91,8 +122,7 @@ class Absearch():
 
         diff = len(friend) - len(enemy)
         friendD = self.distancesBetween(friend)
-        value = 100 * diff - 0.01 * friendD
-        return value
+        return (100 * diff - 0.01 * friendD)
 
     def distancesBetween(self, pieces):
         distances = 0
@@ -104,3 +134,4 @@ class Absearch():
         x1, y1 = current
         x2, y2 = 3.5, 3.5
         return math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)
+

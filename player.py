@@ -4,6 +4,7 @@ from PubgGame import PubgGame
 #Moving module
 from ABsearch import Absearch
 from MinMaxSearch import MinMaxSearch
+from Top3ExplorSearch import Top3ExplorSearch
 
 # placing module
 from HardCodeSearch import HardCodeSearch
@@ -33,7 +34,8 @@ class Player(object):
         """different moving module"""
         # self.predictModule = self.pubgPredictModule
         # self.searchModule = Absearch(self.game, self.myColor)
-        self.pubgMoveSearchModule = MinMaxSearch(self.game, self.myColor)
+        # self.pubgMoveSearchModule = MinMaxSearch(self.game, self.myColor)
+        self.pubgMoveSearchModule = Top3ExplorSearch(self.game, self.myColor)
 
 
 

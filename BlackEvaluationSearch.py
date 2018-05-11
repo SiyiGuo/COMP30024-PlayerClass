@@ -214,3 +214,7 @@ class BlackEvaluationSearch():
     def distanceToCenter(self, pos):
         x,y = pos
         return 0.1*math.sqrt((x-3.5)**2 + (y-3.5)**2)
+
+    def distanceToCenter(self, pos):
+        x,y = pos
+        return 0.1*math.sqrt((x-3.5)**2 + (y-3.5)**2)
