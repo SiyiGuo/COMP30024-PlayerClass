@@ -19,9 +19,10 @@ class Top3ExplorSearch():
 
     def search(self, board, turn, curPlayer):
         """
-        input: A canonical board
+        input: A object board
         return: a action number in range(513)
         """
+
         board = self.game.getCanonicalForm(board, curPlayer)
         boardString = str(self.game.stringRepresentation(board))
         if boardString in self.boards:
@@ -36,6 +37,7 @@ class Top3ExplorSearch():
 
         board, currentP = board
         board = self.game.getCanonicalForm(board, currentP)
+
         result = self.game.getGameEnded(board, 1, turn)
         if result != 0:
             return (0, result * 10000)
@@ -53,11 +55,8 @@ class Top3ExplorSearch():
 
                 # board, player, action, turn)
                 next_board, next_player = self.game.getNextState(board, 1, action, turn)
-                try:
-                    value = self.boardValue(next_board, turn + 1)
-                except:
-                    print(next_board)
-                    a = input()
+
+                value = self.boardValue(next_board, turn + 1)
 
                 boards[action] = next_board
 
@@ -93,7 +92,7 @@ class Top3ExplorSearch():
         """
 
         difference_index = 100
-        interDistance_index =  - 0.01
+        interDistance_index =  0
         toCenterDistance_index = - 0.01
 
         friend = []
@@ -111,17 +110,20 @@ class Top3ExplorSearch():
         toCenterDistance = self.toCenterDistance(friend)
 
 
-        value = difference_index * diff + \
-                toCenterDistance_index * toCenterDistance
-                # interDistance * interDistance_index
+        value = difference_index * diff + toCenterDistance_index * toCenterDistance + interDistance * interDistance_index
 
         return value
 
     def interDistance(self, pieces):
         length = len(pieces[0])
-        sum_x = np.sum(pieces[0])
-        sum_y = np.sum(pieces[1])
-        center_x, center_y = sum_y/length, sum_x/length
+
+        sum_x = 0
+        sum_y = 0
+        for (col, row) in pieces:
+            sum_x += col
+            sum_y += row
+
+        center_x, center_y = sum_x/length, sum_y/length
 
         distances = 0
         for position in pieces:
