@@ -44,13 +44,14 @@ class BlackEvaluationSearch():
             """
             the case my actual color is black
             """
+            action = self.game.actionRefereeToGame((4, 4))
             # board[row][column]
             if board[3][4] == ENEMY:
                 action = self.game.actionRefereeToGame((3, 4))
             elif board[4][3] == ENEMY:
-                action = self.game.actionRefereeToGame((4, 3))
+                action = self.game.actionRefereeToGame((4, 2))
             elif board[3][3] == ENEMY:
-                action = self.game.actionRefereeToGame((4, 4))
+                action = self.game.actionRefereeToGame((3, 2))
             elif board[4][4] == ENEMY:
                 action = self.game.actionRefereeToGame((3, 3))
             else:
@@ -61,17 +62,22 @@ class BlackEvaluationSearch():
             """ first placing round end"""
             return action
         elif turn == 3:
-            if self.dangerousPlace(board, (4, 4)):
+            if board[3][3] == -1 and board[5][4] == -1:
+                result = (4,2)
+                action = self.game.actionRefereeToGame(result)
+            elif board[3][4] == -1 and board[5][3] == -1:
+                result = (3,2)
+                action = self.game.actionRefereeToGame(result)
+            elif board[4][4] == 1:
+                possible_places = [(3, 2), (4, 2), (3, 3), (4, 3), (3, 4)]  # Column, row
+                for (column, row) in possible_places:
+                    if board[row][column] == EMPTY:
+                        if not self.dangerousPlace(board, (column, row)):
+                            result = (column, row)
+                            break
+                action = self.game.actionRefereeToGame(result)
+            else:
                 action = self.evaluateBoard(board)
-                return action
-            possible_places = [(3, 2), (4, 2), (3, 3), (4, 3), (3, 4), (4, 4)]  # Column, row
-            for (column, row) in possible_places:
-                if board[row][column] == EMPTY:
-                    if not self.dangerousPlace(board, (column, row)):
-                        result = (column, row)
-                        break
-
-            action = self.game.actionRefereeToGame(result)
 
             return action
 
