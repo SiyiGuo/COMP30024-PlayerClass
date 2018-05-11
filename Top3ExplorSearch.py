@@ -14,7 +14,7 @@ class Top3ExplorSearch():
         # Player will always be White(1/friend), as we pass in canonical board
         self.game = game
         self.player = player
-        self.abpDepth = 6  # Actual Depth = += 1
+        self.abpDepth = 4  # Actual Depth = += 1
         self.boards = {}
 
     def search(self, board, turn, curPlayer):
@@ -29,7 +29,6 @@ class Top3ExplorSearch():
         else:
             move, _ = self.minMax((board, 1), turn, self.abpDepth, True)
             self.boards[boardString] = move
-        print(move)
         return move
 
 
@@ -47,16 +46,22 @@ class Top3ExplorSearch():
         results = {}
         boards = {}
         max3Queue = []
+
         for action in range(len(valids)):
             if valids[action]:
                 # TODO: Add silly move detector
 
                 # board, player, action, turn)
                 next_board, next_player = self.game.getNextState(board, 1, action, turn)
-                value = self.boardValue(next_board, turn + 1)
+                try:
+                    value = self.boardValue(next_board, turn + 1)
+                except:
+                    print(next_board)
+                    a = input()
+
                 boards[action] = next_board
 
-                # TODO: change to depth
+
                 if len(max3Queue) <= 3:
                     max3Queue.append((action, value))
                 else:
@@ -64,18 +69,20 @@ class Top3ExplorSearch():
                         max3Queue[-1] = (action, value)
 
                 max3Queue = sorted(max3Queue, key=lambda x: x[1])
+
         for (action, value) in max3Queue:
-            print(boards[action])
-            print(value)
-            a = input()
-            _, search = self.minMax(self.game.getNextState(board, 1,  action,  turn), turn + 1, depth - 1,
+            next_board, next_player = self.game.getNextState(board, 1,  action,  turn)
+            _, search = self.minMax((next_board, next_player), turn + 1, depth - 1,
                                     False)
+            search = - search
             results[action] = search
 
         try:
             action = max(results, key=results.get)
         except:
             action = self.game.getActionSize()
+            results[action] = 0
+
         return (action, results[action])
 
     def boardValue(self, board, turn):
@@ -86,8 +93,8 @@ class Top3ExplorSearch():
         """
 
         difference_index = 100
-        interDistance_index = 0.01
-        toCenterDistance_index = 0.01
+        interDistance_index =  - 0.01
+        toCenterDistance_index = - 0.01
 
         friend = []
         enemy = []
@@ -105,8 +112,8 @@ class Top3ExplorSearch():
 
 
         value = difference_index * diff + \
-                toCenterDistance_index * toCenterDistance + \
-                interDistance * interDistance_index
+                toCenterDistance_index * toCenterDistance
+                # interDistance * interDistance_index
 
         return value
 
