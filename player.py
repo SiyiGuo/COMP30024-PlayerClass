@@ -33,9 +33,9 @@ class Player(object):
 
         """different moving module"""
         # self.predictModule = self.pubgPredictModule
-        # self.searchModule = Absearch(self.game, self.myColor)
-        # self.pubgMoveSearchModule = MinMaxSearch(self.game, self.myColor)
-        self.pubgMoveSearchModule = Top3ExplorSearch(self.game, self.myColor)
+        # self.searchModule = Absearch(self.pubg, self.myColor)
+        # self.pubgMoveSearchModule = MinMaxSearch(self.pubg, self.myColor)
+        self.pubgMoveSearchModule = Top3ExplorSearch(self.pubg, self.myColor)
 
 
 

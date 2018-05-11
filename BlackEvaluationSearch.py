@@ -3,7 +3,6 @@ import math
 import operator
 import time
 
-infinity = 999999
 
 FRIEND = 1
 ENEMY = -1

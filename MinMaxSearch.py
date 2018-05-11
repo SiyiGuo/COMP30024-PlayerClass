@@ -5,7 +5,7 @@ import random
 import time
 from Predict import PredictModule
 
-infinity = 999999
+infinity = 9999
 
 
 class MinMaxSearch():

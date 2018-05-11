@@ -5,7 +5,7 @@ import random
 import time
 from Predict import PredictModule
 
-infinity = 999999
+infinity = 9999
 
 
 class Top3ExplorSearch():
@@ -14,7 +14,7 @@ class Top3ExplorSearch():
         # Player will always be White(1/friend), as we pass in canonical board
         self.game = game
         self.player = player
-        self.abpDepth = 3  # Actual Depth = += 1
+        self.abpDepth = 6  # Actual Depth = += 1
         self.boards = {}
 
     def search(self, board, turn, curPlayer):
@@ -41,7 +41,7 @@ class Top3ExplorSearch():
         if result != 0:
             return (0, (result if maximizingPlayer else -result) * 10000)
         if depth == 0:
-            return (0, -1 if maximizingPlayer else 1 * self.boardValue(board, turn))
+            return (0, self.boardValue(board, turn))
 
         valids = self.game.getValidMoves(board, 1)  # 8*8*8+1 vector
         results = {}
@@ -64,7 +64,6 @@ class Top3ExplorSearch():
                             max3Queue[-1] = (action, value)
 
                     max3Queue = sorted(max3Queue, key=lambda x: x[1])
-            print("curPlayer", currentP)
             for (action, value) in max3Queue:
                 _, search = self.minMax(self.game.getNextState(board, -currentP,  action,  turn), turn + 1, depth - 1,
                                         False)
@@ -92,7 +91,7 @@ class Top3ExplorSearch():
                         if value < min3Queue[-1][1]:
                             min3Queue[-1] = (action, value)
 
-                    min3Queue = sorted(min3Queue, key=lambda x: x[1], reverse=True)
+                    min3Queue = sorted(min3Queue, key=lambda x: x[1])
 
             for (action, value) in min3Queue:
                 _, search = self.minMax(self.game.getNextState(board, -currentP, action, turn), turn + 1, depth - 1,
