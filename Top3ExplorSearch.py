@@ -17,6 +17,14 @@ class Top3ExplorSearch():
         self.abpDepth = 4  # Actual Depth = += 1
         self.boards = {}
 
+    def decideAbpDepth(self, total_valid_move, turn):
+        assert(total_valid_move <= 48)
+        print(total_valid_move)
+        if turn in range(185, 192):
+            return 6
+        else:
+            return 4
+
     def search(self, board, turn, curPlayer):
         """
         input: A object board
@@ -25,10 +33,21 @@ class Top3ExplorSearch():
 
         board = self.game.getCanonicalForm(board, curPlayer)
         boardString = str(self.game.stringRepresentation(board))
+
+        valids = np.array(self.game.getValidMoves(board, 1))
+
+        """Forfeit Case"""
+        if np.sum(valids[valids == 1]) == 0:
+            return self.game.getActionSize()
+
+        """Decide"""
+        valid_move_count = np.sum(valids[valids == 1])
+        depth = self.decideAbpDepth(valid_move_count, turn)
+
         if boardString in self.boards:
             move = self.boards[boardString]
         else:
-            move, _ = self.minMax((board, 1), turn, self.abpDepth, True)
+            move, _ = self.minMax((board, 1), turn, depth, True)
             self.boards[boardString] = move
         return move
 
