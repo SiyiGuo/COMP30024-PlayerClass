@@ -48,9 +48,9 @@ class BlackEvaluationSearch():
             if board[3][4] == ENEMY:
                 action = self.game.actionRefereeToGame((3, 4))
             elif board[4][3] == ENEMY:
-                action = self.game.actionRefereeToGame((4, 2))
+                action = self.game.actionRefereeToGame((4, 3))
             elif board[3][3] == ENEMY:
-                action = self.game.actionRefereeToGame((3, 2))
+                action = self.game.actionRefereeToGame((4, 4))
             elif board[4][4] == ENEMY:
                 action = self.game.actionRefereeToGame((3, 3))
             else:
