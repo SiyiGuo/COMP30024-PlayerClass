@@ -21,9 +21,9 @@ class Top3ExplorSearch():
         assert(total_valid_move <= 48)
         print(total_valid_move)
         if turn in range(185, 192):
-            return 6
+            return 8
         else:
-            return 4
+            return 6
 
     def search(self, board, turn, curPlayer):
         """
