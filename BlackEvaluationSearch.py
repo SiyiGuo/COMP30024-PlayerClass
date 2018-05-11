@@ -62,13 +62,13 @@ class BlackEvaluationSearch():
             return action
         elif turn == 3:
             if board[3][3] == -1 and board[5][4] == -1:
-                result = (4,2)
-                action = self.game.actionRefereeToGame(result)
-            elif board[3][4] == -1 and board[5][3] == -1:
                 result = (3,2)
                 action = self.game.actionRefereeToGame(result)
+            elif board[3][4] == -1 and board[5][3] == -1:
+                result = (4,2)
+                action = self.game.actionRefereeToGame(result)
             elif board[4][4] == 1:
-                possible_places = [(3, 2), (4, 2), (3, 3), (4, 3), (3, 4)]  # Column, row
+                possible_places = [(4, 2), (3, 2), (3, 3), (4, 3), (3, 4)]  # Column, row
                 for (column, row) in possible_places:
                     if board[row][column] == EMPTY:
                         if not self.dangerousPlace(board, (column, row)):
@@ -77,8 +77,18 @@ class BlackEvaluationSearch():
                 action = self.game.actionRefereeToGame(result)
             else:
                 action = self.evaluateBoard(board)
-
             return action
+        elif turn == 7:
+            if board[3][3] == -1 and board[5][3] == -1 and board[5][4] == -1 and board[2][4] == 1 and board[4][4] == 1:
+                result = (5,4)
+                action = self.game.actionRefereeToGame(result)
+            elif board[3][4] == -1 and board[5][4] == -1 and board[5][3] == -1 and board[4][3] == 1 and board[2][3] == 1:
+                result = (2,4)
+                action = self.game.actionRefereeToGame(result)
+            else:
+                action = self.evaluateBoard(board)
+            return action
+        
 
         action = self.evaluateBoard(board)
 
