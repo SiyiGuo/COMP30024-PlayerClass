@@ -53,10 +53,10 @@ class Player(object):
 
         # Use our own coordinate for search, and update board
         action = self.search(self.board, turns, self.myColor)
-
+        print(action)
         if self.myColor == BLACK and not self.pubgMode:
             action = 63 - action
-
+        print(action)
         self.board, next_player = self.game.getNextState(self.board, self.myColor, action, self.turn)
 
         # self.game coordinate -> referee
@@ -70,7 +70,7 @@ class Player(object):
             self.turn = 0
             self.searchModule = self.pubgMoveSearchModule
             self.pubgMode = True
-
+        print(action_referee_form)
         return action_referee_form
 
     def update(self, action):
