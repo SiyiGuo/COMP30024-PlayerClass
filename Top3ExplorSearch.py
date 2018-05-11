@@ -22,8 +22,10 @@ class Top3ExplorSearch():
         print(total_valid_move)
         if turn in range(185, 192):
             return 8
+        elif turn in range(122, 128):
+            return 8
         else:
-            return 4
+            return 6
 
     def search(self, board, turn, curPlayer):
         """
@@ -165,9 +167,9 @@ class Top3ExplorSearch():
         :return: a value
         """
 
-        difference_index = 100
-        interDistance_index =  0
-        toCenterDistance_index = - 1000
+        difference_index = 500
+        interDistance_index =  -0.5
+        toCenterDistance_index = -1
 
         friend = []
         enemy = []
@@ -190,6 +192,9 @@ class Top3ExplorSearch():
 
     def interDistance(self, pieces):
         length = len(pieces)
+
+        if length == 0:
+            return -10000
 
         sum_x = 0
         sum_y = 0
