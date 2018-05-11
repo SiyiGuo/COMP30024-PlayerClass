@@ -144,8 +144,6 @@ class WhiteEvaluationSearch():
                 if y>max:
                     max = y
                     action = col, row+2
-        print(results[col][row])
-        print(np.array(results).T)
 
         return self.game.actionRefereeToGame((action))
 

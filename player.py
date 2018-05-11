@@ -2,12 +2,9 @@ from HalfGoGame import HalfGoGame
 from PubgGame import PubgGame
 
 #Moving module
-from ABsearch import Absearch
-from MinMaxSearch import MinMaxSearch
 from Top3ExplorSearch import Top3ExplorSearch
 
 # placing module
-from HardCodeSearch import HardCodeSearch
 from WhiteEvaluationSearch import WhiteEvaluationSearch
 from BlackEvaluationSearch import BlackEvaluationSearch
 

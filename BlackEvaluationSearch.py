@@ -189,7 +189,7 @@ class BlackEvaluationSearch():
                 results[col+col_dir][row+row_dir] += value
         return results
     
-     def updateSidess(self, results, pos, value):
+    def updateSidess(self, results, pos, value):
         sides = [(1,0),(-1,0),(0,1),(0,-1)]
         col, row = pos
         col, row = col, row - 2
